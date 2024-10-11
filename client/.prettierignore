@@ -1,0 +1,17 @@
+# Ignorar la carpeta de construcción para el cliente
+build
+
+# Ignorar la carpeta de módulos de Node.js
+node_modules
+
+# Ignorar la carpeta de cobertura de pruebas
+coverage
+
+# Ignorar los reportes generados por Playwright
+playwright-report
+
+# Ignorar los resultados de pruebas
+test-results
+
+# Ignorar la carpeta de distribución
+dist
