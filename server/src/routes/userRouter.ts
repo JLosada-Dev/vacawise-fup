@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-const usuarioRouter = Router();
+const userRouter = Router();
 
 // Enrutamiento
 /**
@@ -11,7 +11,7 @@ const usuarioRouter = Router();
  * @example response - 500 - Error Interno del Servidor
  * @example response - 404 - No Encontrado
  */
-usuarioRouter.get('/', (req, res) => {
+userRouter.get('/', (req, res) => {
   res.json('Desde GET /');
 });
 
@@ -23,7 +23,7 @@ usuarioRouter.get('/', (req, res) => {
  * @example response - 500 - Error Interno del Servidor
  * @example response - 404 - No Encontrado
  */
-usuarioRouter.post('/', (req, res) => {
+userRouter.post('/', (req, res) => {
   res.json('Desde POST /');
 });
 
@@ -35,7 +35,7 @@ usuarioRouter.post('/', (req, res) => {
  * @example response - 500 - Error Interno del Servidor
  * @example response - 404 - No Encontrado
  */
-usuarioRouter.put('/', (req, res) => {
+userRouter.put('/', (req, res) => {
   res.json('Desde PUT /');
 });
 
@@ -47,7 +47,7 @@ usuarioRouter.put('/', (req, res) => {
  * @example response - 500 - Error Interno del Servidor
  * @example response - 404 - No Encontrado
  */
-usuarioRouter.patch('/', (req, res) => {
+userRouter.patch('/', (req, res) => {
   res.json('Desde PATCH /');
 });
 
@@ -59,10 +59,10 @@ usuarioRouter.patch('/', (req, res) => {
  * @example response - 500 - Error Interno del Servidor
  * @example response - 404 - No Encontrado
  */
-usuarioRouter.delete('/', (req, res) => {
+userRouter.delete('/', (req, res) => {
   res.json('Desde DELETE /');
 });
 
-export default usuarioRouter;
+export default userRouter;
 
 // req: Objeto Request lo que se recibe y res: Objeto Response lo que se envía.
