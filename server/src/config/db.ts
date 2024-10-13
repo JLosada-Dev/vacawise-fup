@@ -16,6 +16,10 @@ import dotenv from 'dotenv'; // Para gestionar variables de entorno desde un arc
 
 dotenv.config();
 
-const db = new Sequelize(process.env.DATABASE_URL!);
+const db = new Sequelize(process.env.DATABASE_URL!, {
+  dialect: 'postgres',
+  models: [__dirname + '/../models/**/*.ts'],
+  logging: false,
+});
 
 export default db;
