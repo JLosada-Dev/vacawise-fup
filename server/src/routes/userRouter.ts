@@ -2,7 +2,9 @@ import { Router } from 'express';
 
 const userRouter = Router();
 
-// Enrutamiento
+// Enrutamiento - endpoints
+
+
 /**
  * GET /
  * @summary Este es el endpoint raíz
@@ -23,9 +25,7 @@ userRouter.get('/', (req, res) => {
  * @example response - 500 - Error Interno del Servidor
  * @example response - 404 - No Encontrado
  */
-userRouter.post('/', (req, res) => {
-  res.json('Desde POST /');
-});
+userRouter.post('/',);
 
 /**
  * PUT /

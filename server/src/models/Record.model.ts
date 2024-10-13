@@ -6,8 +6,8 @@ import {
   ForeignKey,
   BelongsTo,
 } from 'sequelize-typescript';
-import Usuario from './Usuario.model';
-import Bovino from './Bovino.model';
+import Usuario from './User.model';
+import Bovino from './Bovine.model';
 
 @Table({
   tableName: 'registro',

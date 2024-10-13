@@ -1,6 +1,8 @@
 import express from 'express';
 import colors from 'colors';
 import userRouter from './routes/userRouter';
+import bovineRouter from './routes/bovineRouter';
+import recordRouter from './routes/recordRouter';
 import db from './config/db';
 
 // Conecta a la base de datos.
@@ -29,6 +31,8 @@ connectDB();
 const server = express();
 
 // Maneja las rutas de la API de usuarios.
-server.use('/api/users', userRouter);
+server.use('/api/usuario', userRouter);
+server.use('/api/bovino', bovineRouter);
+server.use('/api/registro', recordRouter);
 
 export default server;

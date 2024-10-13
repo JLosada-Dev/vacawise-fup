@@ -6,7 +6,7 @@ import {
   Default,
   HasMany,
 } from 'sequelize-typescript';
-import Registro from './Registro.model';
+import Registro from './Record.model';
 
 @Table({
   tableName: 'usuario',
