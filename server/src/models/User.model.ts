@@ -29,6 +29,14 @@ class Usuario extends Model {
   })
   declare nombre: string;
 
+  // Columna con la cédula del usuario, no puede ser nulo y debe ser único
+  @Column({
+    type: DataType.BIGINT,
+    allowNull: false,
+    unique: true,
+  })
+  declare cedula: number;
+
   // Columna para el rol del usuario, no puede ser nulo y debe ser uno de los valores especificados
   @Column({
     type: DataType.TEXT,
@@ -54,7 +62,7 @@ class Usuario extends Model {
       len: [8, 255],
     },
   })
-  declare contraseña: string;
+  declare clave: string;
 
   // Relación uno a muchos con el modelo Registro
   @HasMany(() => Registro)

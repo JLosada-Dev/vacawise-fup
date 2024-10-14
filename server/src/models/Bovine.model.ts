@@ -8,11 +8,15 @@ import {
 } from 'sequelize-typescript';
 import Registro from './Record.model';
 
+// Construcción con decoradores de la clase Bovino que extiende de Model de sequelize-typescript. agregan una función dentro de otra función.
+// tsconfig.json: "experimentalDecorators": true, "emitDecoratorMetadata": true
+
 @Table({
   tableName: 'bovino',
   timestamps: true,
   paranoid: true,
 })
+
 class Bovino extends Model {
   @Column({
     type: DataType.BIGINT,

@@ -1,9 +1,9 @@
 import { Router } from 'express';
+import { createUser } from '../handlers/user';
 
 const userRouter = Router();
 
 // Enrutamiento - endpoints
-
 
 /**
  * GET /
@@ -25,7 +25,7 @@ userRouter.get('/', (req, res) => {
  * @example response - 500 - Error Interno del Servidor
  * @example response - 404 - No Encontrado
  */
-userRouter.post('/',);
+userRouter.post('/', createUser);
 
 /**
  * PUT /

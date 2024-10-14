@@ -30,6 +30,9 @@ connectDB();
  */
 const server = express();
 
+// Leer datos de formularios.
+server.use(express.json());
+
 // Maneja las rutas de la API de usuarios.
 server.use('/api/usuario', userRouter);
 server.use('/api/bovino', bovineRouter);
