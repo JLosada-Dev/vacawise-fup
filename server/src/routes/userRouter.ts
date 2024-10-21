@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createUser } from '../handlers/user';
+import { createUser, getUsers, loginUser } from '../handlers/user';
 import {
   nombreValidator,
   emailValidator,
@@ -21,9 +21,10 @@ const userRouter = Router();
  * @example response - 500 - Error Interno del Servidor
  * @example response - 404 - No Encontrado
  */
-userRouter.get('/', (req, res) => {
-  res.json('Desde GET /');
-});
+userRouter.get('/', handlersInputErrors, getUsers);
+
+
+userRouter.post('/login', loginUser);
 
 /**
  * POST /
@@ -36,7 +37,7 @@ userRouter.get('/', (req, res) => {
  * @example response - 404 - No Encontrado
  */
 userRouter.post(
-  '/',
+  '/registrar',
   [
     nombreValidator,
     emailValidator,
@@ -56,9 +57,7 @@ userRouter.post(
  * @example response - 500 - Error Interno del Servidor
  * @example response - 404 - No Encontrado
  */
-userRouter.put('/', (req, res) => {
-  res.json('Desde PUT /');
-});
+userRouter.put('/');
 
 /**
  * PATCH /

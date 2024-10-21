@@ -3,6 +3,7 @@ import colors from 'colors';
 import userRouter from './routes/userRouter';
 import bovineRouter from './routes/bovineRouter';
 import recordRouter from './routes/recordRouter';
+import cors, { CorsOptions } from 'cors';
 import db from './config/db';
 
 // Conecta a la base de datos.
@@ -29,6 +30,18 @@ connectDB();
  * @constant {Express} server - La instancia del servidor Express.
  */
 const server = express();
+// Permitir Conexiones
+const corsOptions: CorsOptions = {
+  /**
+   * Origin: Es el dominio que tiene permitido hacer peticiones a la API
+   * callback: Es la función que se ejecuta si el origen tiene permitido hacer peticiones
+   */
+  origin: function (origin, callback) {
+    callback(null, true); // Permitir todas las conexiones
+  },
+};
+
+server.use(cors(corsOptions)); // Habilitar cors
 
 // Leer datos de formularios.
 server.use(express.json());
