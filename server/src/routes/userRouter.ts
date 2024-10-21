@@ -1,5 +1,13 @@
 import { Router } from 'express';
 import { createUser } from '../handlers/user';
+import {
+  nombreValidator,
+  emailValidator,
+  rolValidator,
+  claveValidator,
+  cedulaValidator,
+} from '../utils/validator';
+import { handlersInputErrors } from '../middleware';
 
 const userRouter = Router();
 
@@ -20,12 +28,25 @@ userRouter.get('/', (req, res) => {
 /**
  * POST /
  * @summary Endpoint para manejar solicitudes POST
+ * @param {object} req - Objeto Request que contiene los datos de la solicitud
+ * @param {object} res - Objeto Response que se enviará como respuesta
  * @return {string} 200 - Respuesta desde POST
  * @example response - 200 - Desde POST /
  * @example response - 500 - Error Interno del Servidor
  * @example response - 404 - No Encontrado
  */
-userRouter.post('/', createUser);
+userRouter.post(
+  '/',
+  [
+    nombreValidator,
+    emailValidator,
+    rolValidator,
+    claveValidator,
+    cedulaValidator,
+  ],
+  handlersInputErrors,
+  createUser
+);
 
 /**
  * PUT /
