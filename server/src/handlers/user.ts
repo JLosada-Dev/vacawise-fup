@@ -1,7 +1,7 @@
 // tsconfig.json - "target": "ESNext", moduleResolution: "NodeNext", "module": "NodeNext"
 import { Request, Response } from 'express';
 import Usuario from '../models/User.model';
-import { createEntity, getEntities } from '../utils/createEntity';
+import { createEntity, getEntities } from '../utils/crudOperations';
 
 export const createUser = (req: Request, res: Response) => {
   createEntity(Usuario, req, res);
@@ -12,7 +12,7 @@ export const getUsers = async (req: Request, res: Response) => {
 };
 
 export const loginUser = async (req: Request, res: Response) => {
-  const { email, clave } = req.body; // Destructuramos el email y la clave del cuerpo de la solicitud (req.body)
+  const { email, clave, rol } = req.body; // Destructuramos el email y la clave del cuerpo de la solicitud (req.body)
 
   try {
     // Buscar usuario por email
@@ -25,6 +25,11 @@ export const loginUser = async (req: Request, res: Response) => {
     // Verificar contraseña
     if (user.clave !== clave) {
       return res.status(401).json({ message: 'Contraseña incorrecta' });
+    }
+
+    if(user.rol !== rol){
+      return res.status(401).json({ message: 'Rol incorrecta' });
+
     }
 
     // Usuario autenticado correctamente
