@@ -12,7 +12,7 @@ export const getUsers = async (req: Request, res: Response) => {
 };
 
 export const loginUser = async (req: Request, res: Response) => {
-  const { email, clave, rol } = req.body; // Destructuramos el email y la clave del cuerpo de la solicitud (req.body)
+  const { email, clave, rol } = req.body; // Destructuramos el email, la clave y el rol del cuerpo de la solicitud (req.body)
 
   try {
     // Buscar usuario por email
@@ -27,13 +27,20 @@ export const loginUser = async (req: Request, res: Response) => {
       return res.status(401).json({ message: 'Contraseña incorrecta' });
     }
 
-    if(user.rol !== rol){
-      return res.status(401).json({ message: 'Rol incorrecta' });
-
+    if (user.rol !== rol) {
+      return res.status(401).json({ message: 'Rol incorrecto' });
     }
 
     // Usuario autenticado correctamente
-    res.status(200).json({ message: 'Inicio de sesión exitoso' });
+    res.status(200).json({
+      message: 'Inicio de sesión exitoso',
+      user: {
+        id: user.id,
+        email: user.email,
+        rol: user.rol,
+        nombre: user.nombre, // Puedes agregar más campos según sea necesario
+      },
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
