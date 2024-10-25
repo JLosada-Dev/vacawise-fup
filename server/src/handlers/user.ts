@@ -35,7 +35,7 @@ export const loginUser = async (req: Request, res: Response) => {
     res.status(200).json({
       message: 'Inicio de sesión exitoso',
       user: {
-        id: user.id,
+        id: user.id_usuario,
         email: user.email,
         rol: user.rol,
         nombre: user.nombre, // Puedes agregar más campos según sea necesario
