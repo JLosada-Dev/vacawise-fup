@@ -1,11 +1,17 @@
 import { Router } from 'express';
-import { createUser, getUsers } from '../handlers/bovine';
+import { createBovine, getBovine } from '../handlers/bovine';
 import { handlersInputErrors } from '../middleware';
+import { bovinoValidators } from '../utils/validator';
 
 const bovineRouter = Router();
 
-bovineRouter.post('/', handlersInputErrors, createUser);
+bovineRouter.post(
+  '/registrar',
+  bovinoValidators,
+  handlersInputErrors,
+  createBovine
+);
 
-bovineRouter.get('/', handlersInputErrors, getUsers);
+bovineRouter.get('/consultar', handlersInputErrors, getBovine);
 
 export default bovineRouter;

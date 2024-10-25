@@ -1,11 +1,17 @@
 import { Router } from 'express';
 import { handlersInputErrors } from '../middleware';
-import { createUser, getUsers } from '../handlers/record';
+import { createRecord, getRecord } from '../handlers/record';
+import { recordValidators } from '../utils/validator';
 
 const recordRouter = Router();
 
-recordRouter.post('/', handlersInputErrors, createUser);
+recordRouter.post(
+  '/registrar',
+  recordValidators,
+  handlersInputErrors,
+  createRecord
+);
 
-recordRouter.get('/', handlersInputErrors, getUsers);
+recordRouter.get('/consultar', handlersInputErrors, getRecord);
 
 export default recordRouter;

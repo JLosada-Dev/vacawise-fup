@@ -3,7 +3,10 @@ import { body, ValidationChain } from 'express-validator';
 // Validaciones comunes
 export const nombreValidator: ValidationChain = body('nombre')
   .notEmpty()
-  .withMessage('El nombre es requerido');
+  .withMessage('El nombre es requerido')
+  .isLength({ min: 2, max: 50 })
+  .withMessage('El nombre debe tener entre 2 y 50 caracteres');
+
 export const emailValidator: ValidationChain = body('email')
   .isEmail()
   .withMessage('Debe ser un correo electrónico válido');
@@ -35,10 +38,19 @@ export const bovinoValidators: ValidationChain[] = [
     .withMessage(
       'La raza debe ser una de las siguientes: Holstein, Jersey, Guernsey, Brown Swiss'
     ),
+  body('fecha_nacimiento')
+    .isDate()
+    .withMessage('Debe ser una fecha válida')
+    .custom((value) => {
+      if (new Date(value) > new Date()) {
+        throw new Error('La fecha de nacimiento no puede ser en el futuro');
+      }
+      return true;
+    }),
 ];
 
 // Validaciones específicas para `registro`
-export const registroValidators: ValidationChain[] = [
+export const recordValidators: ValidationChain[] = [
   body('id_usuario')
     .isInt()
     .withMessage('El id de usuario debe ser un número entero'),
@@ -50,4 +62,16 @@ export const registroValidators: ValidationChain[] = [
     .withMessage(
       'El tipo de registro debe ser uno de los siguientes: Produccion, Salud, Reproduccion'
     ),
+  body('detalles')
+    .optional()
+    .isLength({ max: 255 })
+    .withMessage('Los detalles no pueden exceder los 255 caracteres'),
 ];
+
+// Validación de cantidad de leche
+export const cantidadLecheValidator: ValidationChain = body('cantidad_leche')
+  .optional() // Hace que el campo sea opcional
+  .isFloat({ min: 0 }) // Si se proporciona, debe ser un número flotante positivo
+  .withMessage(
+    'La cantidad de leche, si se proporciona, debe ser un número positivo'
+  );

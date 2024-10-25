@@ -11,8 +11,10 @@ import { handlersInputErrors } from '../middleware';
 
 const userRouter = Router();
 
+// Iniciar sesión de un usuario
 userRouter.post('/login', loginUser);
 
+// Realizar el registro de un usuario
 userRouter.post(
   '/registrar',
   [
@@ -26,7 +28,8 @@ userRouter.post(
   createUser
 );
 
-userRouter.get('/', handlersInputErrors, getUsers);
+// Consultar a todos los usuarios
+userRouter.get('/consultar', handlersInputErrors, getUsers);
 
 
 userRouter.put('/');

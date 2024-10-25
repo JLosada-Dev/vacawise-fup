@@ -49,6 +49,6 @@ server.use(express.json());
 // Maneja las rutas de la API de usuarios.
 server.use('/api/usuario', userRouter);
 server.use('/api/bovino', bovineRouter);
-server.use('/api/registro', recordRouter);
+server.use('/api/reporte', recordRouter);
 
 export default server;
