@@ -37,15 +37,16 @@ class Bovino extends Model {
     allowNull: false,
   })
   declare fecha_nacimiento: Date;
-
-  @Column({
-    type: DataType.TEXT,
-    allowNull: false,
-    validate: {
-      isIn: [['Macho', 'Hembra']],
-    },
-  })
-  declare sexo: string;
+  
+  // !Por el momento no se manejar el sexo del bovino
+  // @Column({
+  //   type: DataType.TEXT,
+  //   allowNull: false,
+  //   validate: {
+  //     isIn: [['Macho', 'Hembra']],
+  //   },
+  // })
+  //declare sexo: string;
 
   @Column({
     type: DataType.TEXT,

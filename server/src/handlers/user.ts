@@ -1,10 +1,22 @@
 // tsconfig.json - "target": "ESNext", moduleResolution: "NodeNext", "module": "NodeNext"
 import { Request, Response } from 'express';
+import bcrypt from 'bcrypt';
 import Usuario from '../models/User.model';
 import { createEntity, getEntities } from '../utils/crudOperations';
 
-export const createUser = (req: Request, res: Response) => {
-  createEntity(Usuario, req, res);
+export const createUser = async (req: Request, res: Response) => {
+  try {
+    // Encriptar la contraseña
+    const saltRounds = 10; // Número de rondas de encriptación
+    const hashedPassword = await bcrypt.hash(req.body.clave, saltRounds);
+
+    // Remplazar la contraseña en el cuerpo de la solicitud por la contraseña encriptada
+    req.body.clave = hashedPassword;
+
+    await createEntity(Usuario, req, res);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };
 
 export const getUsers = async (req: Request, res: Response) => {
@@ -19,16 +31,15 @@ export const loginUser = async (req: Request, res: Response) => {
     const user = await Usuario.findOne({ where: { email } });
 
     if (!user) {
-      return res.status(404).json({ message: 'Usuario no encontrado' });
+      return res.status(404).json({ message: 'Credenciales incorrectas' });
     }
+
+    // Verificar la contraseña usando bcrypt.compare
+    const validPassword = await bcrypt.compare(clave, user.clave);
 
     // Verificar contraseña
-    if (user.clave !== clave) {
-      return res.status(401).json({ message: 'Contraseña incorrecta' });
-    }
-
-    if (user.rol !== rol) {
-      return res.status(401).json({ message: 'Rol incorrecto' });
+    if (!validPassword || user.rol !== rol) {
+      return res.status(401).json({ message: 'Credenciales incorrectas' }); // * Mensaje genérico
     }
 
     // Usuario autenticado correctamente
