@@ -49,6 +49,7 @@ class Registro extends Model {
   @Column({
     type: DataType.DATE,
     allowNull: false,
+    defaultValue: DataType.NOW, // * Se asigna la fecha actual por defecto
   })
   declare fecha: Date;
 
