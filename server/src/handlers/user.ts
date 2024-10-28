@@ -122,6 +122,11 @@ export const deleteUser = async (req: Request, res: Response) => {
   if (!user) {
     return res.status(404).json({ error: 'Usuario no encontrado' });
   }
+
+  // Set the estado to false before destroying the user
+  user.estado = false;
+  await user.save();
+
   await user.destroy();
   res.status(200).json({ data: user });
 };
