@@ -64,6 +64,13 @@ class Usuario extends Model {
   })
   declare clave: string;
 
+  @Default(true)
+  @Column({
+    type: DataType.BOOLEAN,
+    allowNull: false,
+  })
+  declare estado: boolean;
+
   // Relación uno a muchos con el modelo Registro
   @HasMany(() => Registro)
   declare registros: Registro[];

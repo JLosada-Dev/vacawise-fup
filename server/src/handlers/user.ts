@@ -63,3 +63,27 @@ export const loginUser = async (req: Request, res: Response) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const updateState = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const user = await Usuario.findByPk(id);
+  if (!user) {
+    return res.status(404).json({ error: 'Usuario no encontrado' });
+  }
+  user.estado = !user.dataValues.estado;
+  await user.save();
+  res.status(200).json({ data: user });
+};
+
+export const updateUser = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const user = await Usuario.findByPk(id);
+
+  if (!user) {
+    return res.status(404).json({ error: 'Usuario no encontrado' });
+  }
+
+  await user.update(req.body);
+  await user.save();
+  res.status(200).json({ data: user });
+};

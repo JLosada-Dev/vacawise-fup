@@ -57,14 +57,12 @@ class Bovino extends Model {
   })
   declare raza: string;
 
-  @Default('Activo')
+  @Default(true)
   @Column({
-    type: DataType.TEXT,
-    validate: {
-      isIn: [['Activo', 'Inactivo']],
-    },
+    type: DataType.BOOLEAN,
+    allowNull: false,
   })
-  declare estado: string;
+  declare estado: boolean;
 
   @HasMany(() => Registro)
   declare registros: Registro[];

@@ -1,5 +1,11 @@
 import { Router } from 'express';
-import { createUser, getUsers, loginUser } from '../handlers/user';
+import {
+  createUser,
+  getUsers,
+  loginUser,
+  updateState,
+  updateUser,
+} from '../handlers/user';
 import {
   nombreValidator,
   emailValidator,
@@ -11,9 +17,10 @@ import { handlersInputErrors } from '../middleware';
 
 const userRouter = Router();
 
+
+// POST Methods
 // Iniciar sesión de un usuario
 userRouter.post('/login', loginUser);
-
 // Realizar el registro de un usuario
 userRouter.post(
   '/registrar',
@@ -28,18 +35,13 @@ userRouter.post(
   createUser
 );
 
+// GET Methods
 // Consultar a todos los usuarios
 userRouter.get('/consultar', handlersInputErrors, getUsers);
 
 
-userRouter.put('/');
-
-userRouter.patch('/', (req, res) => {
-  res.json('Desde PATCH /');
-});
-
-userRouter.delete('/', (req, res) => {
-  res.json('Desde DELETE /');
-});
+// PATCH & PUT Methods
+userRouter.put('/actualizarUsuario/:id', handlersInputErrors, updateUser);
+userRouter.patch('/actualizarEstado/:id', handlersInputErrors, updateState);
 
 export default userRouter;
