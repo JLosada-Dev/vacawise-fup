@@ -20,7 +20,14 @@ export const createUser = async (req: Request, res: Response) => {
 };
 
 export const getUsers = async (req: Request, res: Response) => {
-  getEntities(Usuario, req, res);
+  try {
+    const users = await Usuario.findAll({
+      attributes: { exclude: ['clave', 'deletedAt'] }, // Excluir el campo 'clave' de los resultados
+    });
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };
 
 export const loginUser = async (req: Request, res: Response) => {
