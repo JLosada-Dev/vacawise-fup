@@ -1,26 +1,31 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import { useUserContext } from "../contexts/UserContext"; // Asegúrate de que la ruta sea correcta
-import { PrivateRoutes, PublicRoutes } from "../router/routes"; // Asegúrate de que la ruta sea correcta
+import { useUserContext } from '../contexts/UserContext';
+import { PrivateRoutes, PublicRoutes } from '../router/routes';
 
 interface Props {
-  privateValidation: boolean; // Define si la ruta es privada o pública
+  privateValidation: boolean;
 }
 
 const PrivateValidationFragment = <Outlet />;
-const PublicValidationFragment = <Navigate replace to={PrivateRoutes.PRIVATE} />;
+const PublicValidationFragment = (
+  <Navigate replace to={PrivateRoutes.DASHBOARD} />
+);
 
 export const AuthGuard = ({ privateValidation }: Props) => {
-  const { user } = useUserContext(); // Usamos el contexto para obtener el estado del usuario
+  const { user } = useUserContext();
+  const isAuthenticated = Boolean(user.nombre); // Cambia a true solo si el usuario está autenticado
 
-  return user.name ? (
-    privateValidation ? (
+  if (privateValidation) {
+    // Para rutas privadas, verifica si está autenticado; si no, redirige a login
+    return isAuthenticated ? (
       PrivateValidationFragment
     ) : (
-      PublicValidationFragment
-    )
-  ) : (
-    <Navigate replace to={PublicRoutes.LOGIN} /> // Si no está autenticado, lo redirige al login
-  );
+      <Navigate replace to={PublicRoutes.LOGIN} />
+    );
+  } else {
+    // Para rutas públicas, si está autenticado, redirige a dashboard; si no, muestra la página pública
+    return isAuthenticated ? PublicValidationFragment : <Outlet />;
+  }
 };
 
 export default AuthGuard;

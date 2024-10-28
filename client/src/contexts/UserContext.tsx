@@ -1,5 +1,11 @@
-import React, { createContext, useContext, useReducer, ReactNode } from "react";
-import { UserInfo, Roles } from "../types/"; // Importar el type UserInfo
+import {
+  createContext,
+  useContext,
+  useReducer,
+  ReactNode,
+  useEffect,
+} from 'react';
+import { UserInfo, Roles } from '../types/';
 
 // Define la interfaz del contexto con el rol incluido
 interface UserContextProps {
@@ -12,9 +18,15 @@ interface UserContextProps {
 // Estado inicial del usuario con rol predeterminado
 const EmptyUserState: UserInfo = {
   id: 0,
-  name: "",
-  email: "",
-  rol: "ADMIN" as keyof Roles, // Rol por defecto 'USER'
+  nombre: '',
+  email: '',
+  rol: '' as Roles,
+};
+
+// Cargar el estado inicial desde localStorage si existe
+const getInitialUserState = (): UserInfo => {
+  const storedUser = localStorage.getItem('user');
+  return storedUser ? JSON.parse(storedUser) : EmptyUserState;
 };
 
 const UserContext = createContext<UserContextProps | undefined>(undefined);
@@ -24,11 +36,11 @@ const userReducer = (
   action: { type: string; payload?: any }
 ) => {
   switch (action.type) {
-    case "CREATE_USER":
+    case 'CREATE_USER':
       return { ...state, ...action.payload };
-    case "UPDATE_USER":
+    case 'UPDATE_USER':
       return { ...state, ...action.payload };
-    case "RESET_USER":
+    case 'RESET_USER':
       return EmptyUserState;
     default:
       return state;
@@ -39,26 +51,34 @@ const userReducer = (
 export const UserProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [state, dispatch] = useReducer(userReducer, EmptyUserState);
+  const [state, dispatch] = useReducer(userReducer, getInitialUserState());
 
   // Crear un usuario y guardar en localStorage
   const createUser = (user: UserInfo) => {
-    dispatch({ type: "CREATE_USER", payload: user });
-    localStorage.setItem("user", JSON.stringify(user)); // Persistir en localStorage si es necesario
+    dispatch({ type: 'CREATE_USER', payload: user });
+    localStorage.setItem('user', JSON.stringify(user)); // Persistir en localStorage
   };
 
   // Actualizar el estado de usuario
   const updateUser = (user: Partial<UserInfo>) => {
-    dispatch({ type: "UPDATE_USER", payload: user });
+    dispatch({ type: 'UPDATE_USER', payload: user });
     const updatedUser = { ...state, ...user };
-    localStorage.setItem("user", JSON.stringify(updatedUser)); // Actualizar localStorage
+    localStorage.setItem('user', JSON.stringify(updatedUser)); // Actualizar localStorage
   };
 
   // Resetear el estado de usuario
   const resetUser = () => {
-    dispatch({ type: "RESET_USER" });
-    localStorage.removeItem("user"); // Eliminar del localStorage
+    dispatch({ type: 'RESET_USER' });
+    localStorage.removeItem('user'); // Eliminar del localStorage
   };
+
+  useEffect(() => {
+    // Al cargar el contexto, verifica si hay un usuario almacenado en localStorage y sincroniza el estado
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      dispatch({ type: 'CREATE_USER', payload: JSON.parse(storedUser) });
+    }
+  }, []);
 
   return (
     <UserContext.Provider
@@ -73,7 +93,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
 export const useUserContext = () => {
   const context = useContext(UserContext);
   if (!context) {
-    throw new Error("useUserContext debe utilizarse dentro de un UserProvider");
+    throw new Error('useUserContext debe utilizarse dentro de un UserProvider');
   }
   return context;
 };

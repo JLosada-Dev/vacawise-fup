@@ -1,10 +1,8 @@
-import { Icons } from '@/components/Icon';
-import MaxWidthWrapper from '@/components/MaxWidthWrapper';
-import TeamMemberCard from '@/components/TeamMemberCard';
-import { Button } from '@/components/ui/button';
-import Layout from '@/layouts/Layout';
 import { Check, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import Layout from '@/layouts/Layout';
+import { Icons, MaxWidthWrapper, TeamMemberCard } from '../components/index.ts';
+import { Button } from '@/components/ui/button.tsx';
 import {
   logo,
   line,

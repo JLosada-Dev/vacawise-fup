@@ -1,6 +1,2 @@
 // roles.ts
-export interface Roles {
-  ADMIN: "admin";
-  EMPLOYEE: "employee";
-  VETERINARIAN: "veterinarian";
-}
+export type Roles = 'Administrador' | 'Empleado' | 'Veterinario';

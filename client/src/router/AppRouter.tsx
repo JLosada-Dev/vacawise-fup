@@ -1,31 +1,66 @@
+import RoutesWithNotFound from '../helpers/routes-with-not-found';
 import { BrowserRouter, Route } from 'react-router-dom';
-import { PrivateRoutes, PublicRoutes } from './routes'; // Importa constantes de rutas privadas y públicas
-import { AuthGuard } from '../guards'; // Importa el guard para proteger rutas privadas
-import { Dashboard, HomePage, LoginPage } from '../pages'; // Importa las páginas de la aplicación
-import RoutesWithNotFound from '../helpers/routes-with-not-found'; // Importa un componente para manejar rutas no encontradas
+import { PrivateRoutes, PublicRoutes } from './routes';
+import { AuthGuard, RoleGuard } from '../guards';
+import { HomePage, LoginPage, Dashboard } from '../pages';
+import VaccinesPage from '@/pages/tash';
 
-// Componente principal de enrutamiento de la aplicación
 function AppRouter() {
   return (
     <BrowserRouter>
       <RoutesWithNotFound>
-        {/* Maneja las rutas y los errores 404 */}
-        <Route path='/' element={<HomePage />}></Route>{' '}
-        {/* Ruta protegida por AuthGuard, verifica la autenticación del usuario */}
-        <Route element={<AuthGuard privateValidation />}>
-          <Route
-            path={`${PrivateRoutes.DASHBOARD}/*`} // Ruta para el Dashboard privado
-            element={<Dashboard />}
-          ></Route>
+        {/* Rutas Públicas */}
+        <Route path={PublicRoutes.HOME} element={<HomePage />} />
+        <Route element={<AuthGuard privateValidation={false} />}>
+          <Route path={PublicRoutes.LOGIN} element={<LoginPage />} />
         </Route>
-        {/* Ruta pública para el inicio de sesión */}
-        <Route path={PublicRoutes.LOGIN} element={<LoginPage />}></Route>
-        {/* 
+
+        {/* Rutas protegidas con autenticación */}
+        <Route element={<AuthGuard privateValidation />}>
+          <Route path={PrivateRoutes.DASHBOARD} element={<Dashboard />} />
+
+          {/* Rutas específicas que solo pueden ser accedidas por Administrador */}
+          <Route element={<RoleGuard allowedRoles={['Administrador']} />}>
+            <Route
+              path={PrivateRoutes.ADMINISTRADOR.GESTION_ANIMALES}
+              element={<VaccinesPage />}
+            />
+            <Route
+              path={PrivateRoutes.ADMINISTRADOR.GESTION_REPORTES}
+              element={<VaccinesPage />}
+            />
+            <Route
+              path={PrivateRoutes.ADMINISTRADOR.GESTION_USUARIOS}
+              element={<VaccinesPage />}
+            />
+          </Route>
+
+          {/* Rutas específicas para Veterinario */}
           <Route
-            path={PublicRoutes.LOGIN}
-            element={<Navigate to={PrivateRoutes.DASHBOARD} />}
-          ></Route>
-        */}
+            element={
+              <RoleGuard allowedRoles={['Veterinario', 'Administrador']} />
+            }
+          >
+            <Route
+              path={PrivateRoutes.VETERINARIO.GESTION_ANIMALES}
+              element={<VaccinesPage />}
+            />
+            <Route
+              path={PrivateRoutes.VETERINARIO.GESTION_REPORTES}
+              element={<VaccinesPage />}
+            />
+          </Route>
+
+          {/* Rutas específicas para Empleado */}
+          <Route
+            element={<RoleGuard allowedRoles={['Empleado', 'Administrador']} />}
+          >
+            <Route
+              path={PrivateRoutes.EMPLEADO.GESTION_REPORTES}
+              element={<VaccinesPage />}
+            />
+          </Route>
+        </Route>
       </RoutesWithNotFound>
     </BrowserRouter>
   );
