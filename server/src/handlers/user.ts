@@ -3,7 +3,9 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import Usuario from '../models/User.model';
 import { createEntity, getEntities } from '../utils/crudOperations';
+import { Op } from 'sequelize';
 
+// POST Methods
 export const createUser = async (req: Request, res: Response) => {
   try {
     // Encriptar la contraseña
@@ -18,18 +20,6 @@ export const createUser = async (req: Request, res: Response) => {
     res.status(500).json({ error: error.message });
   }
 };
-
-export const getUsers = async (req: Request, res: Response) => {
-  try {
-    const users = await Usuario.findAll({
-      attributes: { exclude: ['clave', 'deletedAt'] }, // Excluir el campo 'clave' de los resultados
-    });
-    res.status(200).json(users);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
 export const loginUser = async (req: Request, res: Response) => {
   const { email, clave, rol } = req.body; // Destructuramos el email, la clave y el rol del cuerpo de la solicitud (req.body)
 
@@ -64,6 +54,37 @@ export const loginUser = async (req: Request, res: Response) => {
   }
 };
 
+// GET Methods
+export const getUsers = async (req: Request, res: Response) => {
+  try {
+    const users = await Usuario.findAll({
+      attributes: { exclude: ['clave', 'deletedAt'] }, // Excluir el campo 'clave' de los resultados
+    });
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+export const getDeletedUsers = async (req: Request, res: Response) => {
+  try {
+    const deletedUsers = await Usuario.findAll({
+      where: {
+        deletedAt: {
+          // Op.ne: null is a Sequelize operator to check for non-null values
+          [Op.ne]: null,
+        },
+      },
+      paranoid: false, // Include soft-deleted records
+      attributes: { exclude: ['clave'] }, // Exclude the 'clave' field from the results
+    });
+    res.status(200).json(deletedUsers);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+// PATCH & PUT Methods
 export const updateState = async (req: Request, res: Response) => {
   const { id } = req.params;
   const user = await Usuario.findByPk(id);
@@ -83,7 +104,24 @@ export const updateUser = async (req: Request, res: Response) => {
     return res.status(404).json({ error: 'Usuario no encontrado' });
   }
 
+  // Check if the password is being updated
+  if (req.body.clave) {
+    const saltRounds = 10; // Número de rondas de encriptación
+    req.body.clave = await bcrypt.hash(req.body.clave, saltRounds);
+  }
+
   await user.update(req.body);
   await user.save();
+  res.status(200).json({ data: user });
+};
+
+// DELETE Methods
+export const deleteUser = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const user = await Usuario.findByPk(id);
+  if (!user) {
+    return res.status(404).json({ error: 'Usuario no encontrado' });
+  }
+  await user.destroy();
   res.status(200).json({ data: user });
 };

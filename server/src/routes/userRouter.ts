@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import {
   createUser,
+  deleteUser,
+  getDeletedUsers,
   getUsers,
   loginUser,
   updateState,
@@ -16,7 +18,6 @@ import {
 import { handlersInputErrors } from '../middleware';
 
 const userRouter = Router();
-
 
 // POST Methods
 // Iniciar sesión de un usuario
@@ -38,10 +39,13 @@ userRouter.post(
 // GET Methods
 // Consultar a todos los usuarios
 userRouter.get('/consultar', handlersInputErrors, getUsers);
-
+userRouter.get('/consultarUsuariosEliminados', handlersInputErrors, getDeletedUsers);
 
 // PATCH & PUT Methods
 userRouter.put('/actualizarUsuario/:id', handlersInputErrors, updateUser);
 userRouter.patch('/actualizarEstado/:id', handlersInputErrors, updateState);
+
+//DELETE Methods
+userRouter.delete('/eliminarUsuario/:id', handlersInputErrors, deleteUser);
 
 export default userRouter;
