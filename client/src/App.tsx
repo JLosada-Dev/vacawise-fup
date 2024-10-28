@@ -1,7 +1,12 @@
+import { UserProvider } from './contexts/UserContext';
+import AppRouter from './router/AppRouter';
+
 function App() {
   return (
     <>
-      <h1 className='text-6xl'>VacaWise Fup 2.0</h1>
+      <UserProvider>
+        <AppRouter />
+      </UserProvider>
     </>
   );
 }
