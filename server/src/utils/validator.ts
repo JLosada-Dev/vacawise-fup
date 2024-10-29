@@ -30,9 +30,9 @@ export const bovinoValidators: ValidationChain[] = [
   body('numero_etiqueta')
     .notEmpty()
     .withMessage('El número de etiqueta es requerido'),
-  body('sexo')
-    .isIn(['Macho', 'Hembra'])
-    .withMessage('El sexo debe ser Macho o Hembra'),
+  // body('sexo')
+  //   .isIn(['Macho', 'Hembra'])
+  //   .withMessage('El sexo debe ser Macho o Hembra'),
   body('raza')
     .isIn(['Holstein', 'Jersey', 'Guernsey', 'Brown Swiss'])
     .withMessage(

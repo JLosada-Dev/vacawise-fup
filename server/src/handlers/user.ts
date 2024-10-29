@@ -83,6 +83,24 @@ export const getDeletedUsers = async (req: Request, res: Response) => {
   }
 };
 
+export const restoreUser = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    const user = await Usuario.findOne({
+      where: { id_usuario: id },
+      paranoid: false, // Include soft-deleted records
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    await user.restore(); // Restore the soft-deleted user
+    res.status(200).json({ data: user });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 // PATCH & PUT Methods
 export const updateState = async (req: Request, res: Response) => {

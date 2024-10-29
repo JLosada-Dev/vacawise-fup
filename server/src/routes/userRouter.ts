@@ -5,6 +5,7 @@ import {
   getDeletedUsers,
   getUsers,
   loginUser,
+  restoreUser,
   updateState,
   updateUser,
 } from '../handlers/user';
@@ -44,6 +45,7 @@ userRouter.get('/consultarUsuariosEliminados', handlersInputErrors, getDeletedUs
 // PATCH & PUT Methods
 userRouter.put('/actualizarUsuario/:id', handlersInputErrors, updateUser);
 userRouter.patch('/actualizarEstado/:id', handlersInputErrors, updateState);
+userRouter.patch('/restaurarUsuario/:id', handlersInputErrors, restoreUser);
 
 //DELETE Methods
 userRouter.delete('/eliminarUsuario/:id', handlersInputErrors, deleteUser);

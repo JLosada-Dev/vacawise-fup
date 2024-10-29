@@ -71,6 +71,15 @@ class Usuario extends Model {
   })
   declare estado: boolean;
 
+  // @Default('Activo')
+  // @Column({
+  //   type: DataType.STRING,
+  //   validate: {
+  //     isIn: [['Activo', 'Inactivo']],
+  //   },
+  // })
+  // declare estado: string;
+
   // Relación uno a muchos con el modelo Registro
   @HasMany(() => Registro)
   declare registros: Registro[];
