@@ -1,13 +1,15 @@
 import { Button } from '@/components/ui/button';
+import { Toaster } from '@/components/ui/toaster';
 import { useUserContext } from '@/contexts/UserContext';
+import { useToast } from '@/hooks/use-toast';
 import { PrivateRoutes } from '@/router/routes';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Lock, Mail } from 'lucide-react';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 function LoginPage() {
-  //contexto de usuario
   const { createUser } = useUserContext();
+  const { toast } = useToast();
 
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
@@ -30,15 +32,23 @@ function LoginPage() {
 
       const data = await response.json();
       if (response.ok) {
-        console.log(data);
-        console.log('Usuario logueado', data.user.rol);
+        console.log('Usuario logueado', data.user.name);
         createUser(data.user);
         navigate(PrivateRoutes.DASHBOARD);
       } else {
-        console.log('Ocurrió un error', data);
+        toast({
+          title: 'Error de autenticación',
+          description:
+            data.message || 'Ocurrió un error en el inicio de sesión',
+          variant: 'destructive',
+        });
       }
     } catch (error) {
-      console.log('Error del servidor', error);
+      toast({
+        title: 'Error del servidor',
+        description: 'No se pudo conectar al servidor, intenta más tarde.',
+        variant: 'destructive',
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -64,14 +74,14 @@ function LoginPage() {
                 className='w-full p-3 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-0 focus:border-green-600 appearance-none pr-10'
               >
                 <option value='' disabled>
-                  Cual es tu rol
+                  Selecciona tu rol
                 </option>
                 <option value='Administrador'>Administrador</option>
                 <option value='Empleado'>Empleado</option>
                 <option value='Veterinario'>Veterinario</option>
               </select>
               <div className='absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none'>
-                <ChevronDown size={'20px'} />
+                <ChevronDown size={'20px'} className='text-gray-400' />
               </div>
             </div>
           </div>
@@ -80,28 +90,34 @@ function LoginPage() {
             <label className='block text-sm font-medium text-gray-700 mb-1'>
               Correo Electrónico
             </label>
-            <input
-              placeholder='tu correo electrónico'
-              type='email'
-              value={email}
-              onChange={({ target }) => setEmail(target.value)}
-              required
-              className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-0 focus:border-green-600'
-            />
+            <div className='relative'>
+              <input
+                placeholder='example@gmail.com'
+                type='email'
+                value={email}
+                onChange={({ target }) => setEmail(target.value)}
+                required
+                className='w-full p-3 pl-10 border border-gray-300 rounded-md focus:outline-none focus:ring-0 focus:border-green-600'
+              />
+              <Mail className='absolute left-3 top-3 text-gray-400' />
+            </div>
           </div>
 
           <div className='mb-4'>
             <label className='block text-sm font-medium text-gray-700 mb-1'>
               Contraseña
             </label>
-            <input
-              placeholder='tu contraseña'
-              type='password'
-              value={clave}
-              onChange={({ target }) => setClave(target.value)}
-              required
-              className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-0 focus:border-green-600'
-            />
+            <div className='relative'>
+              <input
+                placeholder='tu contraseña'
+                type='password'
+                value={clave}
+                onChange={({ target }) => setClave(target.value)}
+                required
+                className='w-full p-3 pl-10 border border-gray-300 rounded-md focus:outline-none focus:ring-0 focus:border-green-600'
+              />
+              <Lock className='absolute left-3 top-3 text-gray-400' />
+            </div>
           </div>
           <Button type='submit' className='w-full' disabled={isSubmitting}>
             {isSubmitting ? 'Iniciando...' : 'Iniciar Sesión'}
@@ -114,6 +130,7 @@ function LoginPage() {
           </Link>
         </p>
       </div>
+      <Toaster />
     </div>
   );
 }

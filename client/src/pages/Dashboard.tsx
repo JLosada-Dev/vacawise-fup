@@ -14,7 +14,6 @@ function Dashboard() {
     return <VetDashboard />;
   }
   if (user.rol === 'Empleado') {
-    console.log('user rol', user.rol);
     return <EmployeeDashboard />;
   }
 
