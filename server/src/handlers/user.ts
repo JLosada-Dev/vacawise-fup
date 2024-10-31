@@ -21,7 +21,7 @@ export const createUser = async (req: Request, res: Response) => {
   }
 };
 export const loginUser = async (req: Request, res: Response) => {
-  const { email, clave, rol } = req.body; // Destructuramos el email, la clave y el rol del cuerpo de la solicitud (req.body)
+  const { email, clave, rol } = req.body; // Desestructuramos el email, la clave y el rol del cuerpo de la solicitud (req.body)
 
   try {
     // Buscar usuario por email
