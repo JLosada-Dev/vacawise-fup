@@ -1,19 +1,20 @@
 // tsconfig.json - "target": "ESNext", moduleResolution: "NodeNext", "module": "NodeNext"
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
+import { hashPassword } from '../utils/bcryptUtils';
 import Usuario from '../models/User.model';
-import { createEntity, getEntities } from '../utils/crudOperations';
+import { createEntity } from '../utils/crudOperations';
 import { Op } from 'sequelize';
 
 // POST Methods
 export const createUser = async (req: Request, res: Response) => {
   try {
     // Encriptar la contraseña
-    const saltRounds = 10; // Número de rondas de encriptación
-    const hashedPassword = await bcrypt.hash(req.body.clave, saltRounds);
-
+    // const saltRounds = 10; // Número de rondas de encriptación
+    // const hashedPassword = await bcrypt.hash(req.body.clave, saltRounds);
+    const password = req.body.clave;
     // Remplazar la contraseña en el cuerpo de la solicitud por la contraseña encriptada
-    req.body.clave = hashedPassword;
+    req.body.clave = await hashPassword(password);
 
     await createEntity(Usuario, req, res);
   } catch (error) {
@@ -22,13 +23,11 @@ export const createUser = async (req: Request, res: Response) => {
 };
 export const loginUser = async (req: Request, res: Response) => {
   const { email, clave, rol } = req.body; // Desestructuramos el email, la clave y el rol del cuerpo de la solicitud (req.body)
-
   try {
     // Buscar usuario por email
     const user = await Usuario.findOne({ where: { email } });
-
     if (!user) {
-      return res.status(404).json({ message: 'Credenciales incorrectas' });
+      return res.status(404).json({ message: 'Credenciales incorrectas' }); // 404 Not Found
     }
 
     // Verificar la contraseña usando bcrypt.compare
@@ -36,7 +35,7 @@ export const loginUser = async (req: Request, res: Response) => {
 
     // Verificar contraseña
     if (!validPassword || user.rol !== rol) {
-      return res.status(401).json({ message: 'Credenciales incorrectas' }); // * Mensaje genérico
+      return res.status(401).json({ message: 'Credenciales incorrectas' }); // 401 Unauthorized
     }
 
     // Usuario autenticado correctamente
@@ -78,6 +77,22 @@ export const getDeletedUsers = async (req: Request, res: Response) => {
       attributes: { exclude: ['clave'] }, // Exclude the 'clave' field from the results
     });
     res.status(200).json(deletedUsers);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+export const getUserByCC = async (req: Request, res: Response) => {
+  try {
+    const { cedula } = req.params;
+    const user = await Usuario.findOne({
+      where: { cedula },
+      attributes: { exclude: ['clave', 'deletedAt'] },
+    });
+    if (!user) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -124,8 +139,8 @@ export const updateUser = async (req: Request, res: Response) => {
 
   // Check if the password is being updated
   if (req.body.clave) {
-    const saltRounds = 10; // Número de rondas de encriptación
-    req.body.clave = await bcrypt.hash(req.body.clave, saltRounds);
+    const password = req.body.clave;
+    req.body.clave = await hashPassword(password);
   }
 
   await user.update(req.body);
@@ -147,4 +162,16 @@ export const deleteUser = async (req: Request, res: Response) => {
 
   await user.destroy();
   res.status(200).json({ data: user });
+};
+
+
+
+// Obtener la cantidad de usuarios
+export const getCountUsuarios = async (req: Request, res: Response) => {
+  try {
+    const count = await Usuario.count();
+    res.status(200).json({ count });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };

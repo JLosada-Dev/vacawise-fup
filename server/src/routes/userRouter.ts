@@ -2,7 +2,9 @@ import { Router } from 'express';
 import {
   createUser,
   deleteUser,
+  getCountUsuarios,
   getDeletedUsers,
+  getUserByCC,
   getUsers,
   loginUser,
   restoreUser,
@@ -40,7 +42,13 @@ userRouter.post(
 // GET Methods
 // Consultar a todos los usuarios
 userRouter.get('/consultar', handlersInputErrors, getUsers);
-userRouter.get('/consultarUsuariosEliminados', handlersInputErrors, getDeletedUsers);
+userRouter.get('/consultarUsuario/:cedula', getUserByCC);
+userRouter.get(
+  '/consultarUsuariosEliminados',
+  handlersInputErrors,
+  getDeletedUsers
+);
+userRouter.get('/contar', handlersInputErrors, getCountUsuarios);
 
 // PATCH & PUT Methods
 userRouter.put('/actualizarUsuario/:id', handlersInputErrors, updateUser);

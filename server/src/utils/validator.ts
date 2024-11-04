@@ -1,4 +1,4 @@
-import { body, ValidationChain } from 'express-validator';
+import { body, param, ValidationChain } from 'express-validator';
 
 // Validaciones comunes
 export const nombreValidator: ValidationChain = body('nombre')
@@ -68,8 +68,12 @@ export const recordValidators: ValidationChain[] = [
     .withMessage('Los detalles no pueden exceder los 255 caracteres'),
 ];
 
+export const idValidator: ValidationChain = param('id')
+  .isInt()
+  .withMessage('ID no válido');
+
 // Validación de cantidad de leche
-export const cantidadLecheValidator: ValidationChain = body('cantidad_leche')
+export const milkQuantityValidator: ValidationChain = body('cantidad_leche')
   .optional() // Hace que el campo sea opcional
   .isFloat({ min: 0 }) // Si se proporciona, debe ser un número flotante positivo
   .withMessage(

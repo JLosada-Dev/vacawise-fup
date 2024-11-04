@@ -1,8 +1,6 @@
 import express from 'express';
 import colors from 'colors';
-import userRouter from './routes/userRouter';
-import bovineRouter from './routes/bovineRouter';
-import recordRouter from './routes/recordRouter';
+import { userRouter, bovineRouter, recordRouter, viewRouter } from './routes';
 import cors, { CorsOptions } from 'cors';
 import db from './config/db';
 
@@ -50,5 +48,7 @@ server.use(express.json());
 server.use('/api/usuario', userRouter);
 server.use('/api/bovino', bovineRouter);
 server.use('/api/reporte', recordRouter);
+
+server.use('/api/vistas', viewRouter);
 
 export default server;

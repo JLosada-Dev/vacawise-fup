@@ -20,6 +20,12 @@ const db = new Sequelize(process.env.DATABASE_URL!, {
   dialect: 'postgres',
   models: [__dirname + '/../models/**/*.ts'],
   logging: false,
+  pool: {
+    max: 5,
+    min: 0,
+    acquire: 30000,
+    idle: 10000,
+  },
 });
 
 export default db;
