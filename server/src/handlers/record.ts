@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { Op } from 'sequelize';
+import { Op, Sequelize } from 'sequelize';
 import Registro from '../models/Record.model';
 import {
   createEntity,
@@ -76,6 +76,43 @@ export const getMilkProduction = async (req: Request, res: Response) => {
       ProduccionMensual: monthlyProduction || 0,
       ProduccionAnual: yearlyProduction || 0,
     });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Endpoint Grafica
+export const getMilkProductionCurrentMonth = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth();
+
+    const productions = await Registro.findAll({
+      attributes: [
+        [Sequelize.fn('DATE', Sequelize.col('fecha')), 'date'],
+        [Sequelize.fn('SUM', Sequelize.col('cantidad_leche')), 'totalMilk'],
+      ],
+      where: {
+        fecha: {
+          [Op.gte]: new Date(currentYear, currentMonth, 1),
+          [Op.lt]: new Date(currentYear, currentMonth + 1, 1),
+        },
+        tipo_registro: 'Produccion',
+      },
+      group: [Sequelize.fn('DATE', Sequelize.col('fecha'))],
+      order: [[Sequelize.fn('DATE', Sequelize.col('fecha')), 'ASC']],
+    });
+
+    const formattedProductions = productions.map((production) => ({
+      date: production.get('date'),
+      totalMilk: production.get('totalMilk'),
+    }));
+
+    res.status(200).json(formattedProductions);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

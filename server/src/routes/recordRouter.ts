@@ -4,6 +4,7 @@ import {
   createRecord,
   deleteRecord,
   getMilkProduction,
+  getMilkProductionCurrentMonth,
   getRecord,
   restoreRecord,
   updateRecord,
@@ -31,5 +32,12 @@ recordRouter.put('/actualizar/:id', handlersInputErrors, updateRecord);
 recordRouter.patch('/restaurar/:id', handlersInputErrors, restoreRecord);
 // DELETE Methods
 recordRouter.delete('/eliminar/:id', handlersInputErrors, deleteRecord);
+
+//Grafica
+recordRouter.get(
+  '/grafica',
+  handlersInputErrors,
+  getMilkProductionCurrentMonth
+);
 
 export default recordRouter;
