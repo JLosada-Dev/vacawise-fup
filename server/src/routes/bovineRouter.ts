@@ -3,6 +3,7 @@ import {
   createBovine,
   deleteBovine,
   getBovine,
+  getBovineForSelect,
   getCountBovinos,
   restoreBovine,
   updateBovine,
@@ -36,6 +37,7 @@ bovineRouter.put(
   handlersInputErrors,
   updateBovine
 );
+bovineRouter.get('/consultarParaSeleccion', getBovineForSelect);
 // PATCH Method
 bovineRouter.patch(
   '/actualizarEstado/:id',

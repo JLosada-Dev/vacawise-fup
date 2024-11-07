@@ -7,6 +7,7 @@ import {
   deleteEntity,
   restoreEntity,
 } from '../utils/crudOperations';
+import { bovineRouter } from '../routes';
 
 // Crear un bovino
 export const createBovine = (req: Request, res: Response) => {
@@ -15,6 +16,16 @@ export const createBovine = (req: Request, res: Response) => {
 // Consultar a todos los bovinos
 export const getBovine = async (req: Request, res: Response) => {
   getEntities(Bovino, req, res);
+};
+export const getBovineForSelect = async (req: Request, res: Response) => {
+  try {
+    const bovine = await Bovino.findAll({
+      attributes: ['id_bovino', 'numero_etiqueta'],
+    });
+    res.status(200).json({ data: bovine });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };
 // Actualizar Bovinos
 export const updateBovine = async (req: Request, res: Response) => {
