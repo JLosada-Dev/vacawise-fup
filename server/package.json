@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --exec ts-node src/index.ts",
-    "test": "jest --detectOpenHandles"
+    "test": "jest --detectOpenHandles",
+    "pretest": "ts-node ./src/data --clear"
   },
   "author": "VacaWise Company",
   "license": "ISC",

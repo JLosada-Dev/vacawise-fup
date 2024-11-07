@@ -21,9 +21,6 @@ export const usuarioValidators: ValidationChain[] = [
   body('cedula')
     .isInt({ min: 1 })
     .withMessage('La cédula debe ser un número entero positivo'),
-  body('fecha')
-    .isDate()
-    .withMessage('Debe ser una fecha válida'),
 ];
 
 // Validaciones específicas para `bovino`

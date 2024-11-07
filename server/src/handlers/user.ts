@@ -26,6 +26,7 @@ export const loginUser = async (req: Request, res: Response) => {
   try {
     // Buscar usuario por email
     const user = await Usuario.findOne({ where: { email } });
+    
     if (!user) {
       return res.status(404).json({ message: 'Credenciales incorrectas' }); // 404 Not Found
     }
