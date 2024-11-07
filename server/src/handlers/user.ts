@@ -165,8 +165,6 @@ export const deleteUser = async (req: Request, res: Response) => {
   res.status(200).json({ data: user });
 };
 
-
-
 // Obtener la cantidad de usuarios
 export const getCountUsuarios = async (req: Request, res: Response) => {
   try {
