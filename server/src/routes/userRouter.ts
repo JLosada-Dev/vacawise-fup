@@ -11,13 +11,7 @@ import {
   updateState,
   updateUser,
 } from '../handlers/user';
-import {
-  nombreValidator,
-  emailValidator,
-  rolValidator,
-  claveValidator,
-  cedulaValidator,
-} from '../utils/validator';
+import { usuarioValidators } from '../utils/validator';
 import { handlersInputErrors } from '../middleware';
 
 const userRouter = Router();
@@ -28,13 +22,7 @@ userRouter.post('/login', loginUser);
 // Realizar el registro de un usuario
 userRouter.post(
   '/registrar',
-  [
-    nombreValidator,
-    emailValidator,
-    rolValidator,
-    claveValidator,
-    cedulaValidator,
-  ],
+ usuarioValidators,
   handlersInputErrors,
   createUser
 );

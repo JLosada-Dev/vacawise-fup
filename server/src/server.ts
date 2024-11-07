@@ -5,7 +5,7 @@ import cors, { CorsOptions } from 'cors';
 import db from './config/db';
 
 // Conecta a la base de datos.
-async function connectDB() {
+export async function connectDB() {
   try {
     await db.authenticate();
     db.sync(); // Sincroniza los modelos con la base de datos.

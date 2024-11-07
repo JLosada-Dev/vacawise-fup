@@ -12,7 +12,6 @@ import { handlersInputErrors } from '../middleware';
 import {
   bovinoValidators,
   idValidator,
-  milkQuantityValidator,
 } from '../utils/validator';
 
 const bovineRouter = Router();
@@ -21,7 +20,6 @@ const bovineRouter = Router();
 bovineRouter.post(
   '/registrar',
   bovinoValidators,
-  milkQuantityValidator,
   handlersInputErrors,
   createBovine
 );
