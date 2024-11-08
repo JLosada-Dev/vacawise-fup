@@ -54,13 +54,20 @@ export const loginUser = async (req: Request, res: Response) => {
   }
 };
 
-// GET Methods
+
 export const getUsers = async (req: Request, res: Response) => {
   try {
     const users = await Usuario.findAll({
+      order: [['id_usuario', 'ASC']], // Ordenar por id_usuario de forma ascendente
       attributes: { exclude: ['clave', 'deletedAt'] }, // Excluir el campo 'clave' de los resultados
     });
+
+    if (users.length === 0) {
+      return res.status(404).json({ message: 'No se encontraron usuarios' });
+    }
+
     res.status(200).json(users);
+    
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

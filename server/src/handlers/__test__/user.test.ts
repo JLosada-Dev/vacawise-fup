@@ -1,6 +1,17 @@
 import request from 'supertest';
 import server from '../../server'; // Asegúrate de importar tu aplicación
 
+describe('GET /api/usuario/consultar', () => {
+  it('Flujo 2: Consulta de usuario fallida', async () => {
+    const response = await request(server).get('/api/usuario/consultar');
+
+    expect(response.status).toBe(404);
+    expect(response.body).toEqual({
+      message: 'No se encontraron usuarios',
+    });
+  });
+});
+
 // Testing the user handler POST /user
 describe('POST /usuario/registrar', () => {
   it('Flujo 1: Creación de usuario de manera exitosa', async () => {
@@ -87,6 +98,17 @@ describe('POST /api/usuario/login', () => {
 });
 
 // Testing the user handler GET /user/consultar
+describe('GET /api/usuario/consultar', () => {
+  it('Flujo 1: Consulta de usuario exitosa', async () => {
+    const response = await request(server).get('/api/usuario/consultar');
+
+    expect(response.status).toBe(200);
+    expect(response.headers['content-type']).toMatch(/json/);
+    expect(response.body).toHaveLength(1);
+    expect(response.body).not.toHaveProperty('errors');
+   
+  });
+});
 
 // Testing the user handler GET /user/contar
 
