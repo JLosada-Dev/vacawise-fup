@@ -2,7 +2,7 @@ import RoutesWithNotFound from '../helpers/routes-with-not-found';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { PrivateRoutes, PublicRoutes } from './routes';
 import { AuthGuard, RoleGuard } from '../guards';
-import { HomePage, LoginPage, Dashboard } from '../pages';
+import { HomePage, LoginPage, Dashboard, GestionReportesPage } from '../pages';
 import VaccinesPage from '@/pages/tash';
 
 function AppRouter() {
@@ -19,44 +19,40 @@ function AppRouter() {
         <Route element={<AuthGuard privateValidation />}>
           <Route path={PrivateRoutes.DASHBOARD} element={<Dashboard />} />
 
-          {/* Rutas específicas que solo pueden ser accedidas por Administrador */}
+          {/* GESTION_USUARIOS */}
           <Route element={<RoleGuard allowedRoles={['Administrador']} />}>
             <Route
-              path={PrivateRoutes.ADMINISTRADOR.GESTION_ANIMALES}
-              element={<VaccinesPage />}
-            />
-            <Route
-              path={PrivateRoutes.ADMINISTRADOR.GESTION_REPORTES}
-              element={<VaccinesPage />}
-            />
-            <Route
-              path={PrivateRoutes.ADMINISTRADOR.GESTION_USUARIOS}
+              path={PrivateRoutes.GESTION_USUARIOS}
               element={<VaccinesPage />}
             />
           </Route>
 
-          {/* Rutas específicas para Veterinario */}
+          {/* GESTION_ANIMALES */}
           <Route
             element={
-              <RoleGuard allowedRoles={['Veterinario', 'Administrador']} />
+              <RoleGuard allowedRoles={['Administrador', 'Veterinario']} />
             }
           >
             <Route
-              path={PrivateRoutes.VETERINARIO.GESTION_ANIMALES}
-              element={<VaccinesPage />}
-            />
-            <Route
-              path={PrivateRoutes.VETERINARIO.GESTION_REPORTES}
+              path={PrivateRoutes.GESTION_ANIMALES}
               element={<VaccinesPage />}
             />
           </Route>
 
-          {/* Rutas específicas para Empleado */}
+          {/* GESTION_REPORTES */}
           <Route
-            element={<RoleGuard allowedRoles={['Empleado', 'Administrador']} />}
+            element={
+              <RoleGuard
+                allowedRoles={['Administrador', 'Veterinario', 'Empleado']}
+              />
+            }
           >
             <Route
-              path={PrivateRoutes.EMPLEADO.GESTION_REPORTES}
+              path={PrivateRoutes.GESTION_REPORTES}
+              element={<GestionReportesPage />}
+            />
+            <Route
+              path={PrivateRoutes.GENERAR_REPORTE}
               element={<VaccinesPage />}
             />
           </Route>

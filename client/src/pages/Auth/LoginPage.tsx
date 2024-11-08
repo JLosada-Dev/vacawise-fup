@@ -126,7 +126,7 @@ function LoginPage() {
         <p className='mt-4 text-sm text-center text-gray-600'>
           ¿No tienes una cuenta?{' '}
           <Link to='/#' className='text-green-600 font-medium'>
-            Yuca
+            contacta al administrador
           </Link>
         </p>
       </div>

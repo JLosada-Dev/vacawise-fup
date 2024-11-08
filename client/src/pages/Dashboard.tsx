@@ -1,25 +1,15 @@
-import { useUserContext } from '@/contexts/UserContext';
-import { Navigate } from 'react-router-dom';
-import EmployeeDashboard from './Dashboards/EmployeeDashboard';
-import AdminDashboard from './Dashboards/AdminDashboard';
-import VetDashboard from './Dashboards/VetDashboard';
+import RootLayout from '@/layouts/Layout';
+import { MaxWidthWrapper, Component } from '@/components';
 
 function Dashboard() {
-  const { user } = useUserContext();
-
-  if (user.rol === 'Administrador') {
-    return <AdminDashboard />;
-  }
-  if (user.rol === 'Veterinario') {
-    return <VetDashboard />;
-  }
-  if (user.rol === 'Empleado') {
-    return <EmployeeDashboard />;
-  }
-
   return (
     <>
-      <Navigate to='/login' />
+      <RootLayout>
+        <MaxWidthWrapper>
+          <div>AdminDashboard</div>
+          <Component />
+        </MaxWidthWrapper>
+      </RootLayout>
     </>
   );
 }

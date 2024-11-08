@@ -17,11 +17,11 @@ const chartData = [
 const chartConfig = {
   desktop: {
     label: 'Desktop',
-    color: '#2563eb',
+    color: 'YELLOW',
   },
   mobile: {
     label: 'Mobile',
-    color: '#60a5fa',
+    color: '#aa44dd',
   },
 } satisfies ChartConfig;
 
@@ -29,6 +29,7 @@ export default function Component() {
   return (
     <RootLayout>
       <MaxWidthWrapper>
+        <h1>Esta pagina es de Gestion de Reportes</h1>
         <ChartContainer config={chartConfig} className='min-h-[200px] w-full'>
           <BarChart accessibilityLayer data={chartData}>
             <Bar dataKey='desktop' fill='var(--color-desktop)' radius={4} />

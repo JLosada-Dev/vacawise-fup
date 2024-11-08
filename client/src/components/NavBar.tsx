@@ -3,6 +3,7 @@ import MaxWidthWrapper from './MaxWidthWrapper';
 import { buttonVariants } from './ui/button';
 import { useUserContext } from '@/contexts/UserContext';
 import { PrivateRoutes, PublicRoutes } from '@/router/routes';
+import UserMenu from './UserMenu';
 
 function Navigation() {
   const { user, resetUser } = useUserContext();
@@ -11,34 +12,45 @@ function Navigation() {
   const roleLinks = {
     Administrador: [
       {
-        path: PrivateRoutes.ADMINISTRADOR.GESTION_USUARIOS,
+        path: PrivateRoutes.GESTION_USUARIOS,
         label: 'Gestión de Usuarios',
       },
       {
-        path: PrivateRoutes.ADMINISTRADOR.GESTION_REPORTES,
-        label: 'Gestión de Producción',
+        path: PrivateRoutes.GESTION_REPORTES,
+        label: 'Gestión de Reportes',
       },
       {
-        path: PrivateRoutes.ADMINISTRADOR.GESTION_ANIMALES,
+        path: PrivateRoutes.GENERAR_REPORTE,
+        label: 'Generar de Reporte',
+      },
+      {
+        path: PrivateRoutes.GESTION_ANIMALES,
         label: 'Gestión de Animales',
       },
     ],
     Veterinario: [
       {
-        path: PrivateRoutes.VETERINARIO.GESTION_ANIMALES,
-        label: 'Gestión de Animales',
+        path: PrivateRoutes.GESTION_REPORTES,
+        label: 'Gestión de Reportes',
       },
       {
-        path: PrivateRoutes.VETERINARIO.GESTION_REPORTES,
-        label: 'Generar de Reportes',
+        path: PrivateRoutes.GENERAR_REPORTE,
+        label: 'Generar Reporte',
       },
     ],
     Empleado: [
       {
-        path: PrivateRoutes.EMPLEADO.GESTION_REPORTES,
-        label: 'Registro de Reportes',
+        path: PrivateRoutes.GESTION_REPORTES,
+        label: 'Gestión de Reportes',
+      },
+      {
+        path: PrivateRoutes.GENERAR_REPORTE,
+        label: 'Generar Reporte',
       },
     ],
+  };
+  const handleLogout = () => {
+    resetUser();
   };
 
   return (
@@ -74,12 +86,7 @@ function Navigation() {
                   Administrador ✨
                 </Link>
                 <div className='h-8 w-px bg-zinc-200 hidden sm:block' />
-                <button
-                  onClick={resetUser}
-                  className={buttonVariants({ size: 'sm', variant: 'default' })}
-                >
-                  Cerrar Sesión
-                </button>
+                <UserMenu user={user} onLogout={handleLogout} />
               </>
             ) : (
               <Link
