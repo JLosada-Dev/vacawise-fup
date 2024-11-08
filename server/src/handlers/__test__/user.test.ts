@@ -1,3 +1,6 @@
+//npm test
+// npm run test:coverage
+
 import request from 'supertest';
 import server from '../../server'; // Asegúrate de importar tu aplicación
 
@@ -106,7 +109,6 @@ describe('GET /api/usuario/consultar', () => {
     expect(response.headers['content-type']).toMatch(/json/);
     expect(response.body).toHaveLength(1);
     expect(response.body).not.toHaveProperty('errors');
-   
   });
 });
 

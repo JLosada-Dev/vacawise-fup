@@ -54,7 +54,6 @@ export const loginUser = async (req: Request, res: Response) => {
   }
 };
 
-
 export const getUsers = async (req: Request, res: Response) => {
   try {
     const users = await Usuario.findAll({
