@@ -93,3 +93,22 @@
 .grainy-dark {
   background-image: url('./assets/grainy-dark.png');
 }
+
+/* Personalizar la barra de desplazamiento */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px; /* Ancho de la barra de desplazamiento */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #16a34a; /* Color del "pulgar" de la barra de desplazamiento */
+  border-radius: 10px; /* Bordes redondeados */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #008531; /* Color cuando el pulgar está siendo arrastrado */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #e8f5e9; /* Fondo de la pista */
+  border-radius: 10px;
+}

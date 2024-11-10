@@ -17,12 +17,14 @@ function LoginPage() {
   const [rol, setRol] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const URL_LOGIN = import.meta.env.VITE_URL_LOGIN;
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); //Evita que el formulario se envíe de forma tradicional
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('http://localhost:3000/api/usuario/login', {
+      const response = await fetch(URL_LOGIN, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
