@@ -3,13 +3,13 @@ import { handlersInputErrors } from '../middleware';
 import {
   createRecord,
   deleteRecord,
-  getMilkProduction,
-  getMilkProductionCurrentMonth,
+  // getMilkProduction,
+  // getMilkProductionCurrentMonth,
   getRecord,
-  restoreRecord,
+  // restoreRecord,
   updateRecord,
 } from '../handlers/record';
-import { recordValidators } from '../utils/validator';
+import { idValidator, recordValidators } from '../utils/validator';
 
 const recordRouter = Router();
 // POST Methods
@@ -21,23 +21,34 @@ recordRouter.post(
 );
 // GET Methods
 recordRouter.get('/consultar', handlersInputErrors, getRecord);
-recordRouter.get(
-  '/consultarProduccion',
-  handlersInputErrors,
-  getMilkProduction
-);
+// recordRouter.get(
+//   '/consultarProduccion',
+//   handlersInputErrors,
+//   getMilkProduction
+// );
 // PUT Methods
-recordRouter.put('/actualizar/:id', handlersInputErrors, updateRecord);
-// PATCH Methods
-recordRouter.patch('/restaurar/:id', handlersInputErrors, restoreRecord);
-// DELETE Methods
-recordRouter.delete('/eliminar/:id', handlersInputErrors, deleteRecord);
-
-//Grafica
-recordRouter.get(
-  '/grafica',
+recordRouter.put(
+  '/actualizar/:id',
+  idValidator,
+  recordValidators,
   handlersInputErrors,
-  getMilkProductionCurrentMonth
+  updateRecord
 );
+// PATCH Methods
+// recordRouter.patch('/restaurar/:id', handlersInputErrors, restoreRecord);
+// DELETE Methods
+recordRouter.delete(
+  '/eliminar/:id',
+  idValidator,
+  handlersInputErrors,
+  deleteRecord
+);
+
+// //Grafica
+// recordRouter.get(
+//   '/grafica',
+//   handlersInputErrors,
+//   getMilkProductionCurrentMonth
+// );
 
 export default recordRouter;

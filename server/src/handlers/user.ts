@@ -71,70 +71,70 @@ export const getUsers = async (req: Request, res: Response) => {
     res.status(500).json({ error: error.message });
   }
 };
-export const getDeletedUsers = async (req: Request, res: Response) => {
-  try {
-    const deletedUsers = await Usuario.findAll({
-      where: {
-        deletedAt: {
-          // Op.ne: null is a Sequelize operator to check for non-null values
-          [Op.ne]: null,
-        },
-      },
-      paranoid: false, // Include soft-deleted records
-      attributes: { exclude: ['clave'] }, // Exclude the 'clave' field from the results
-    });
-    res.status(200).json(deletedUsers);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-export const getUserByCC = async (req: Request, res: Response) => {
-  try {
-    const { cedula } = req.params;
-    const user = await Usuario.findOne({
-      where: { cedula },
-      attributes: { exclude: ['clave', 'deletedAt'] },
-    });
-    if (!user) {
-      return res.status(404).json({ error: 'Usuario no encontrado' });
-    }
+// export const getDeletedUsers = async (req: Request, res: Response) => {
+//   try {
+//     const deletedUsers = await Usuario.findAll({
+//       where: {
+//         deletedAt: {
+//           // Op.ne: null is a Sequelize operator to check for non-null values
+//           [Op.ne]: null,
+//         },
+//       },
+//       paranoid: false, // Include soft-deleted records
+//       attributes: { exclude: ['clave'] }, // Exclude the 'clave' field from the results
+//     });
+//     res.status(200).json(deletedUsers);
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// };
+// export const getUserByCC = async (req: Request, res: Response) => {
+//   try {
+//     const { cedula } = req.params;
+//     const user = await Usuario.findOne({
+//       where: { cedula },
+//       attributes: { exclude: ['clave', 'deletedAt'] },
+//     });
+//     if (!user) {
+//       return res.status(404).json({ error: 'Usuario no encontrado' });
+//     }
 
-    res.status(200).json(user);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+//     res.status(200).json(user);
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// };
 
-export const restoreUser = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  try {
-    const user = await Usuario.findOne({
-      where: { id_usuario: id },
-      paranoid: false, // Include soft-deleted records
-    });
+// export const restoreUser = async (req: Request, res: Response) => {
+//   const { id } = req.params;
+//   try {
+//     const user = await Usuario.findOne({
+//       where: { id_usuario: id },
+//       paranoid: false, // Include soft-deleted records
+//     });
 
-    if (!user) {
-      return res.status(404).json({ error: 'Usuario no encontrado' });
-    }
+//     if (!user) {
+//       return res.status(404).json({ error: 'Usuario no encontrado' });
+//     }
 
-    await user.restore(); // Restore the soft-deleted user
-    res.status(200).json({ data: user });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+//     await user.restore(); // Restore the soft-deleted user
+//     res.status(200).json({ data: user });
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// };
 
 // PATCH & PUT Methods
-export const updateState = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const user = await Usuario.findByPk(id);
-  if (!user) {
-    return res.status(404).json({ error: 'Usuario no encontrado' });
-  }
-  user.estado = !user.dataValues.estado;
-  await user.save();
-  res.status(200).json({ data: user });
-};
+// export const updateState = async (req: Request, res: Response) => {
+//   const { id } = req.params;
+//   const user = await Usuario.findByPk(id);
+//   if (!user) {
+//     return res.status(404).json({ error: 'Usuario no encontrado' });
+//   }
+//   user.estado = !user.dataValues.estado;
+//   await user.save();
+//   res.status(200).json({ data: user });
+// };
 
 export const updateUser = async (req: Request, res: Response) => {
   const { id } = req.params;
@@ -172,11 +172,11 @@ export const deleteUser = async (req: Request, res: Response) => {
 };
 
 // Obtener la cantidad de usuarios
-export const getCountUsuarios = async (req: Request, res: Response) => {
-  try {
-    const count = await Usuario.count();
-    res.status(200).json({ count });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+// export const getCountUsuarios = async (req: Request, res: Response) => {
+//   try {
+//     const count = await Usuario.count();
+//     res.status(200).json({ count });
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// };

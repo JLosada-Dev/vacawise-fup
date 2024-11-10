@@ -3,10 +3,10 @@ import {
   createBovine,
   deleteBovine,
   getBovine,
-  getCountBovinos,
-  restoreBovine,
+  // getCountBovinos,
+  // restoreBovine,
   updateBovine,
-  updateBovineStatus,
+  // updateBovineStatus,
 } from '../handlers/bovine';
 import { handlersInputErrors } from '../middleware';
 import {
@@ -25,7 +25,7 @@ bovineRouter.post(
 );
 // GET Method
 bovineRouter.get('/consultar', handlersInputErrors, getBovine);
-bovineRouter.get('/contar', handlersInputErrors, getCountBovinos);
+// bovineRouter.get('/contar', handlersInputErrors, getCountBovinos);
 // PUT Method
 bovineRouter.put(
   '/actualizar/:id',
@@ -35,18 +35,18 @@ bovineRouter.put(
   updateBovine
 );
 // PATCH Method
-bovineRouter.patch(
-  '/actualizarEstado/:id',
-  idValidator,
-  handlersInputErrors,
-  updateBovineStatus
-);
-bovineRouter.patch(
-  '/restaurar/:id',
-  idValidator,
-  handlersInputErrors,
-  restoreBovine
-);
+// bovineRouter.patch(
+//   '/actualizarEstado/:id',
+//   idValidator,
+//   handlersInputErrors,
+//   updateBovineStatus
+// );
+// bovineRouter.patch(
+//   '/restaurar/:id',
+//   idValidator,
+//   handlersInputErrors,
+//   restoreBovine
+// );
 // DELETE Method
 bovineRouter.delete(
   '/eliminar/:id',

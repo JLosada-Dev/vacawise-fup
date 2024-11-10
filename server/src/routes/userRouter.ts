@@ -2,16 +2,16 @@ import { Router } from 'express';
 import {
   createUser,
   deleteUser,
-  getCountUsuarios,
-  getDeletedUsers,
-  getUserByCC,
+  // getCountUsuarios,
+  // getDeletedUsers,
+  // getUserByCC,
   getUsers,
   loginUser,
-  restoreUser,
-  updateState,
+  // restoreUser,
+  // updateState,
   updateUser,
 } from '../handlers/user';
-import { usuarioValidators } from '../utils/validator';
+import { usuarioValidators, idValidator } from '../utils/validator';
 import { handlersInputErrors } from '../middleware';
 
 const userRouter = Router();
@@ -22,7 +22,7 @@ userRouter.post('/login', loginUser);
 // Realizar el registro de un usuario
 userRouter.post(
   '/registrar',
- usuarioValidators,
+  usuarioValidators,
   handlersInputErrors,
   createUser
 );
@@ -30,20 +30,41 @@ userRouter.post(
 // GET Methods
 // Consultar a todos los usuarios
 userRouter.get('/consultar', handlersInputErrors, getUsers);
-userRouter.get('/consultarUsuario/:cedula', getUserByCC);
-userRouter.get(
-  '/consultarUsuariosEliminados',
-  handlersInputErrors,
-  getDeletedUsers
-);
-userRouter.get('/contar', handlersInputErrors, getCountUsuarios);
+// userRouter.get(
+//   '/consultarUsuariosEliminados',
+//   handlersInputErrors,
+//   getDeletedUsers
+// );
+// userRouter.get('/consultarUsuario/:cedula', getUserByCC);
+// userRouter.get('/contar', handlersInputErrors, getCountUsuarios);
 
 // PATCH & PUT Methods
-userRouter.put('/actualizarUsuario/:id', handlersInputErrors, updateUser);
-userRouter.patch('/actualizarEstado/:id', handlersInputErrors, updateState);
-userRouter.patch('/restaurarUsuario/:id', handlersInputErrors, restoreUser);
+userRouter.put(
+  '/actualizarUsuario/:id',
+  idValidator,
+  usuarioValidators,
+  handlersInputErrors,
+  updateUser
+);
+// userRouter.patch(
+//   '/actualizarEstado/:id',
+//   idValidator,
+//   handlersInputErrors,
+//   updateState
+// );
+// userRouter.patch(
+//   '/restaurarUsuario/:id',
+//   idValidator,
+//   handlersInputErrors,
+//   restoreUser
+// );
 
 //DELETE Methods
-userRouter.delete('/eliminarUsuario/:id', handlersInputErrors, deleteUser);
+userRouter.delete(
+  '/eliminarUsuario/:id',
+  idValidator,
+  handlersInputErrors,
+  deleteUser
+);
 
 export default userRouter;
