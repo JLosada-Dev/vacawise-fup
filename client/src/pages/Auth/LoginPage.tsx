@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button';
-import { Toaster } from '@/components/ui/toaster';
 import { useUserContext } from '@/contexts/UserContext';
 import { useToast } from '@/hooks/use-toast';
 import { PrivateRoutes } from '@/router/routes';
@@ -132,7 +131,6 @@ function LoginPage() {
           </Link>
         </p>
       </div>
-      <Toaster />
     </div>
   );
 }

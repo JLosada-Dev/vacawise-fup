@@ -1,10 +1,11 @@
-import RootLayout from '@/layouts/Layout';
+import RootLayout from '@/layouts/RootLayout';
 import { MaxWidthWrapper, DataChart } from '@/components';
 import { useEffect, useState } from 'react';
 import { useUserContext } from '@/contexts/UserContext';
-import { ChartBar, Clipboard } from 'lucide-react';
+import { CalendarCheck2, ClipboardList } from 'lucide-react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+import { logo } from '@/assets/images';
+import { Production, UsersInfo } from '@/types';
 import {
   Card,
   CardContent,
@@ -16,18 +17,16 @@ import {
   getUsers,
   getTotalCows,
   getProduction,
-  Production,
-  Users,
   getTotalUsers,
+  toggleUserStatus,
 } from '@/API/services/apiService';
-import { toggleUserStatus } from '@/helpers/toggleUserStatus';
-import { logo } from '@/assets/images';
+import StatusButton from '@/components/StatusButton';
 
 function Dashboard() {
   const { user } = useUserContext();
   const [loading, setLoading] = useState(true);
 
-  const [users, setUsers] = useState<Users[]>([]);
+  const [users, setUsers] = useState<UsersInfo[]>([]);
   const [totalUsers, setTotalUsers] = useState<number>(0);
   const [totalCows, setTotalCows] = useState<number>(0);
   const [production, setProduction] = useState<Production>({
@@ -90,42 +89,50 @@ function Dashboard() {
             <div className='flex flex-col gap-6'>
               <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6'>
                 <Card className='w-full'>
-                  <CardHeader className='flex flex-row justify-between items-center'>
-                    <CardTitle>Número total de vacas </CardTitle>
-                    <Clipboard />
+                  <CardHeader className='flex flex-row justify-between items-center pb-2'>
+                    <CardTitle className='font-medium'>
+                      Número total de vacas{' '}
+                    </CardTitle>
+                    <ClipboardList />
                   </CardHeader>
                   <CardContent>
-                    <p className='text-2xl font-bold'>{`${totalCows} vacas`}</p>
+                    <p className='text-2xl font-semibold'>{`${totalCows} vacas`}</p>
                   </CardContent>
                 </Card>
 
                 <Card className='w-full'>
-                  <CardHeader className='flex flex-row justify-between items-center'>
-                    <CardTitle>Producción Diaria</CardTitle>
-                    <ChartBar />
+                  <CardHeader className='flex flex-row justify-between items-center pb-2'>
+                    <CardTitle className='font-medium'>
+                      Producción Diaria
+                    </CardTitle>
+                    <CalendarCheck2 />
                   </CardHeader>
                   <CardContent>
-                    <p className='text-2xl font-bold'>{`${production.daily} ml`}</p>
+                    <p className='text-2xl font-semibold'>{`${production.daily} ml`}</p>
                   </CardContent>
                 </Card>
 
                 <Card className='w-full'>
-                  <CardHeader className='flex flex-row justify-between items-center'>
-                    <CardTitle>Producción Mensual</CardTitle>
-                    <ChartBar />
+                  <CardHeader className='flex flex-row justify-between items-center pb-2'>
+                    <CardTitle className='font-medium'>
+                      Producción Mensual
+                    </CardTitle>
+                    <CalendarCheck2 />
                   </CardHeader>
                   <CardContent>
-                    <p className='text-2xl font-bold'>{`${production.monthly} ml`}</p>
+                    <p className='text-2xl font-semibold'>{`${production.monthly} ml`}</p>
                   </CardContent>
                 </Card>
 
                 <Card className='w-full'>
-                  <CardHeader className='flex flex-row justify-between items-center'>
-                    <CardTitle>Producción Anual</CardTitle>
-                    <ChartBar />
+                  <CardHeader className='flex flex-row justify-between items-center pb-2'>
+                    <CardTitle className='font-medium'>
+                      Producción Anual
+                    </CardTitle>
+                    <CalendarCheck2 />
                   </CardHeader>
                   <CardContent>
-                    <p className='text-2xl font-bold'>{`${production.yearly} ml`}</p>
+                    <p className='text-2xl font-semibold'>{`${production.yearly} ml`}</p>
                   </CardContent>
                 </Card>
               </div>
@@ -173,19 +180,11 @@ function Dashboard() {
                                 </CardDescription>
                               </div>
                             </div>
-                            <Button
-                              onClick={() =>
-                                handleToggleStatus(
-                                  member.id_usuario,
-                                  member.estado
-                                )
-                              }
-                              className={`px-4 py-2 mt-2 text-white rounded ${
-                                member.estado ? 'bg-green-500' : 'bg-red-500'
-                              }`}
-                            >
-                              {member.estado ? 'Activo' : 'Inactivo'}
-                            </Button>
+                            <StatusButton
+                              userId={member.id_usuario}
+                              currentStatus={member.estado}
+                              onToggleStatus={handleToggleStatus}
+                            />
                           </div>
                         </Card>
                       ))}

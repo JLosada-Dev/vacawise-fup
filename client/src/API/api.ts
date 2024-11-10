@@ -1,6 +1,9 @@
-export async function fetchData(url: any) {
+export async function fetchData(
+  url: string,
+  options?: RequestInit
+): Promise<any> {
   try {
-    const response = await fetch(url);
+    const response = await fetch(url, options);
     if (!response.ok) {
       throw new Error(`HTTP error! Estado: ${response.status}`);
     }

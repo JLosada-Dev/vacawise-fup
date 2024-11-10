@@ -1,9 +1,16 @@
-// user.type.ts
 import { Roles } from './roles';
 
 export interface UserInfo {
   id: number;
   nombre: string;
   email: string;
-  rol: Roles; // Esto permite que el rol sea uno de los valores de Roles
+  rol: Roles;
+}
+
+export interface UsersInfo {
+  id_usuario: string;
+  nombre: string;
+  rol: string;
+  email: string;
+  estado: boolean;
 }

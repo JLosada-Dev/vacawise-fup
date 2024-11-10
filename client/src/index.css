@@ -100,12 +100,12 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: #16a34a; /* Color del "pulgar" de la barra de desplazamiento */
+  background-color: #86efac; /* Color del "pulgar" de la barra de desplazamiento */
   border-radius: 10px; /* Bordes redondeados */
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: #008531; /* Color cuando el pulgar está siendo arrastrado */
+  background-color: #4ade80; /* Color cuando el pulgar está siendo arrastrado */
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {

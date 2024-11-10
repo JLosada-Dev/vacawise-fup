@@ -3,7 +3,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { PrivateRoutes, PublicRoutes } from './routes';
 import { AuthGuard, RoleGuard } from '../guards';
 import { HomePage, LoginPage, Dashboard, GestionReportesPage } from '../pages';
-import VaccinesPage from '@/pages/tash';
+import VaccinesPage from '@/pages/GestionReportes/GestionReportesPage';
 
 function AppRouter() {
   return (

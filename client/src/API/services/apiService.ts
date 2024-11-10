@@ -1,22 +1,9 @@
+import { UsersInfo, Production } from '@/types';
 import { fetchData } from '../api';
+import { toast } from '@/hooks/use-toast';
 
-export interface Users {
-  id_usuario: string;
-  nombre: string;
-  rol: string;
-  email: string;
-  estado: boolean;
-}
-
-export interface Production {
-  daily: number;
-  monthly: number;
-  yearly: number;
-}
-
-export async function getUsers(): Promise<Users[]> {
+export async function getUsers(): Promise<UsersInfo[]> {
   const usersData = await fetchData(import.meta.env.VITE_URL_USUARIOS);
-  console.log(usersData);
   return usersData.map((user: any) => ({
     id_usuario: user.id_usuario,
     nombre: user.nombre,
@@ -24,6 +11,32 @@ export async function getUsers(): Promise<Users[]> {
     email: user.email,
     estado: user.estado,
   }));
+}
+
+export async function toggleUserStatus(
+  userId: string,
+  currentStatus: boolean
+): Promise<void> {
+  const url = `${import.meta.env.VITE_URL_ESTADO_USUARIO}/${userId}`;
+  const options = {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ estado: !currentStatus }), // Cambia el estado
+  };
+
+  try {
+    await fetchData(url, options);
+  } catch (error) {
+    toast({
+      title: 'Error al actualizar el estado del usuario:',
+      description: 'No se pudo actualizar el estado, intentalo más tarde.',
+      variant: 'destructive',
+    });
+    console.error('Error al actualizar el estado del usuario:', error);
+    throw error;
+  }
 }
 
 export async function getTotalUsers(): Promise<number> {

@@ -2,7 +2,7 @@
 
 import { Bar, BarChart } from 'recharts';
 import { ChartConfig, ChartContainer } from '@/components/ui/chart';
-import RootLayout from '@/layouts/Layout';
+import RootLayout from '@/layouts/RootLayout';
 import { MaxWidthWrapper } from '@/components';
 
 const chartData = [

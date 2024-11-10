@@ -1,6 +1,6 @@
 import { Check, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import Layout from '@/layouts/Layout';
+import Layout from '@/layouts/RootLayout.tsx';
 import { Icons, MaxWidthWrapper, TeamMemberCard } from '../components/index.ts';
 import { Button } from '@/components/ui/button.tsx';
 import {

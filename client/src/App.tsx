@@ -1,3 +1,4 @@
+import { Toaster } from './components/ui/toaster';
 import { UserProvider } from './contexts/UserContext';
 import AppRouter from './router/AppRouter';
 
@@ -6,6 +7,7 @@ function App() {
     <>
       <UserProvider>
         <AppRouter />
+        <Toaster />
       </UserProvider>
     </>
   );
