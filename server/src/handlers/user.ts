@@ -136,41 +136,47 @@ export const updateState = async (req: Request, res: Response) => {
 };
 
 export const updateUser = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const user = await Usuario.findByPk(id);
+  try {
+    const { id } = req.params;
+    const user = await Usuario.findByPk(id);
 
-  if (!user) {
-    return res.status(404).json({ error: 'Usuario no encontrado' });
+    if (!user) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    // Check if the password is being updated
+    if (req.body.clave) {
+      const password = req.body.clave;
+      req.body.clave = await hashPassword(password);
+    }
+
+    await user.update(req.body);
+    await user.save();
+    res.status(200).json({ data: user });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
-
-  // Check if the password is being updated
-  if (req.body.clave) {
-    const password = req.body.clave;
-    req.body.clave = await hashPassword(password);
-  }
-
-  await user.update(req.body);
-  await user.save();
-  res.status(200).json({ data: user });
 };
 
 // DELETE Methods
 export const deleteUser = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const user = await Usuario.findByPk(id);
-  if (!user) {
-    return res.status(404).json({ error: 'Usuario no encontrado' });
+  try {
+    const { id } = req.params;
+    const user = await Usuario.findByPk(id);
+    if (!user) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    // Set the estado to false before destroying the user
+    user.estado = false;
+    await user.save();
+
+    await user.destroy();
+    res.status(200).json({ data: user });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
-
-  // Set the estado to false before destroying the user
-  user.estado = false;
-  await user.save();
-
-  await user.destroy();
-  res.status(200).json({ data: user });
 };
-
-
 
 // Obtener la cantidad de usuarios
 export const getCountUsuarios = async (req: Request, res: Response) => {
