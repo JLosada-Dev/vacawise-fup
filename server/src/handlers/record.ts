@@ -10,10 +10,20 @@ import {
 } from '../utils/crudOperations';
 
 // Crear un registro
-export const createRecord = (req: Request, res: Response) => {
+export const createRecord = async (req: Request, res: Response) => {
   createEntity(Registro, req, res);
 };
 
+// registrar bluk
+export const createRecordBulk = async (req: Request, res: Response) => {
+  try {
+    const { records } = req.body;
+    const createdRecords = await Registro.bulkCreate(records);
+    res.status(201).json(createdRecords);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 // Consultar a todos los registros
 export const getRecord = async (req: Request, res: Response) => {
   getEntities(Registro, req, res);

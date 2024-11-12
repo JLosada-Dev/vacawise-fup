@@ -9,7 +9,7 @@ import {
   restoreRecord,
   updateRecord,
 } from '../handlers/record';
-import { recordValidators } from '../utils/validator';
+import { idValidator, recordValidators } from '../utils/validator';
 
 const recordRouter = Router();
 // POST Methods
@@ -27,11 +27,26 @@ recordRouter.get(
   getMilkProduction
 );
 // PUT Methods
-recordRouter.put('/actualizar/:id', handlersInputErrors, updateRecord);
+recordRouter.put(
+  '/actualizar/:id',
+  idValidator,
+  handlersInputErrors,
+  updateRecord
+);
 // PATCH Methods
-recordRouter.patch('/restaurar/:id', handlersInputErrors, restoreRecord);
+recordRouter.patch(
+  '/restaurar/:id',
+  idValidator,
+  handlersInputErrors,
+  restoreRecord
+);
 // DELETE Methods
-recordRouter.delete('/eliminar/:id', handlersInputErrors, deleteRecord);
+recordRouter.delete(
+  '/eliminar/:id',
+  idValidator,
+  handlersInputErrors,
+  deleteRecord
+);
 
 //Grafica
 recordRouter.get(
