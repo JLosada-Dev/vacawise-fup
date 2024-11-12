@@ -11,7 +11,7 @@ import {
   updateState,
   updateUser,
 } from '../handlers/user';
-import { usuarioValidators } from '../utils/validator';
+import { idValidator, usuarioValidators } from '../utils/validator';
 import { handlersInputErrors } from '../middleware';
 
 const userRouter = Router();
@@ -39,11 +39,31 @@ userRouter.get(
 userRouter.get('/contar', handlersInputErrors, getCountUsuarios);
 
 // PATCH & PUT Methods
-userRouter.put('/actualizarUsuario/:id', handlersInputErrors, updateUser);
-userRouter.patch('/actualizarEstado/:id', handlersInputErrors, updateState);
-userRouter.patch('/restaurarUsuario/:id', handlersInputErrors, restoreUser);
+userRouter.put(
+  '/actualizarUsuario/:id',
+  idValidator,
+  handlersInputErrors,
+  updateUser
+);
+userRouter.patch(
+  '/actualizarEstado/:id',
+  idValidator,
+  handlersInputErrors,
+  updateState
+);
+userRouter.patch(
+  '/restaurarUsuario/:id',
+  idValidator,
+  handlersInputErrors,
+  restoreUser
+);
 
 //DELETE Methods
-userRouter.delete('/eliminarUsuario/:id', handlersInputErrors, deleteUser);
+userRouter.delete(
+  '/eliminarUsuario/:id',
+  idValidator,
+  handlersInputErrors,
+  deleteUser
+);
 
 export default userRouter;
