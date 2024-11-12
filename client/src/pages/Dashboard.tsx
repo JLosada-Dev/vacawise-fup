@@ -19,7 +19,7 @@ import {
   getProduction,
   getTotalUsers,
   toggleUserStatus,
-} from '@/API/services/apiService';
+} from '@/API/services/index';
 import StatusButton from '@/components/StatusButton';
 
 function Dashboard() {

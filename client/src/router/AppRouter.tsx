@@ -2,8 +2,14 @@ import RoutesWithNotFound from '../helpers/routes-with-not-found';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { PrivateRoutes, PublicRoutes } from './routes';
 import { AuthGuard, RoleGuard } from '../guards';
-import { HomePage, LoginPage, Dashboard, GestionReportesPage } from '../pages';
-import VaccinesPage from '@/pages/GestionReportes/GestionReportesPage';
+import {
+  HomePage,
+  LoginPage,
+  Dashboard,
+  GestionBovinosPage,
+  GestionReportesPage,
+  GestionUsuariosPage,
+} from '../pages';
 
 function AppRouter() {
   return (
@@ -23,7 +29,7 @@ function AppRouter() {
           <Route element={<RoleGuard allowedRoles={['Administrador']} />}>
             <Route
               path={PrivateRoutes.GESTION_USUARIOS}
-              element={<VaccinesPage />}
+              element={<GestionUsuariosPage />}
             />
           </Route>
 
@@ -35,7 +41,7 @@ function AppRouter() {
           >
             <Route
               path={PrivateRoutes.GESTION_ANIMALES}
-              element={<VaccinesPage />}
+              element={<GestionBovinosPage />}
             />
           </Route>
 
@@ -53,7 +59,7 @@ function AppRouter() {
             />
             <Route
               path={PrivateRoutes.GENERAR_REPORTE}
-              element={<VaccinesPage />}
+              element={<GestionBovinosPage />}
             />
           </Route>
         </Route>

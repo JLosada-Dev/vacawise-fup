@@ -1,5 +1,3 @@
-'use client';
-
 import { useEffect, useState } from 'react';
 import { Bar, BarChart, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 import { ChartConfig, ChartContainer } from '@/components/ui/chart';
@@ -50,7 +48,7 @@ function DataChart() {
         <p className='text-red-500'>Hubo un problema: {error}</p>
       ) : loading ? (
         <span className='flex justify-center items-center'>
-          <l-helix />
+          <l-helix size={40} />
         </span>
       ) : (
         <ChartContainer config={chartConfig}>
