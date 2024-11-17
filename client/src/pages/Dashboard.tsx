@@ -2,7 +2,7 @@ import RootLayout from '@/layouts/RootLayout';
 import { MaxWidthWrapper, DataChart } from '@/components';
 import { useEffect, useState } from 'react';
 import { useUserContext } from '@/contexts/UserContext';
-import { CalendarCheck2, ClipboardList } from 'lucide-react';
+import { ClipboardList, Milk } from 'lucide-react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { logo } from '@/assets/images';
 import { Production, UsersInfo } from '@/types';
@@ -83,8 +83,10 @@ function Dashboard() {
             <l-helix />
           </span>
         ) : (
-          <div className='my-6'>
-            <h1 className='text-2xl font-bold my-6'>{`Panel De Control Del ${user.rol}`}</h1>
+          <div className='bg-white p-4 rounded-xl my-6'>
+            <h1 className='text-2xl font-bold my-6'>
+              Panel De Control Del {user.rol}
+            </h1>
 
             <div className='flex flex-col gap-6'>
               <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6'>
@@ -105,7 +107,7 @@ function Dashboard() {
                     <CardTitle className='font-medium'>
                       Producción Diaria
                     </CardTitle>
-                    <CalendarCheck2 />
+                    <Milk />
                   </CardHeader>
                   <CardContent>
                     <p className='text-2xl font-semibold'>{`${production.daily} ml`}</p>
@@ -117,7 +119,7 @@ function Dashboard() {
                     <CardTitle className='font-medium'>
                       Producción Mensual
                     </CardTitle>
-                    <CalendarCheck2 />
+                    <Milk />
                   </CardHeader>
                   <CardContent>
                     <p className='text-2xl font-semibold'>{`${production.monthly} ml`}</p>
@@ -129,7 +131,7 @@ function Dashboard() {
                     <CardTitle className='font-medium'>
                       Producción Anual
                     </CardTitle>
-                    <CalendarCheck2 />
+                    <Milk />
                   </CardHeader>
                   <CardContent>
                     <p className='text-2xl font-semibold'>{`${production.yearly} ml`}</p>
@@ -158,11 +160,11 @@ function Dashboard() {
                       <CardTitle>Control de usuarios</CardTitle>
                       <CardDescription>{`Existen ${totalUsers} usuarios en total`}</CardDescription>
                     </CardHeader>
-                    <CardContent className='h-full overflow-y-auto p-4 custom-scrollbar'>
+                    <CardContent className='h-[380px] overflow-y-auto p-4 custom-scrollbar'>
                       {users.map((member, index) => (
                         <Card
                           key={index}
-                          className='mb-4 last:mb-0 border-none shadow-none p-0 '
+                          className='mb-4 last:mb-0 border-none shadow-none p-0'
                         >
                           <div className='flex items-center justify-between pb-4'>
                             <div className='flex items-center space-x-4'>

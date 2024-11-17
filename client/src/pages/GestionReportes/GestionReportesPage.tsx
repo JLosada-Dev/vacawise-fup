@@ -1,7 +1,9 @@
 import { MaxWidthWrapper } from '@/components';
-import { DataTable } from '@/components/DataTable';
 import RootLayout from '@/layouts/RootLayout';
 import { ColumnDef } from '@tanstack/react-table';
+import { DataTable } from './DataTable';
+import { useState } from 'react';
+import { createReport, deleteReport, updateReport } from '@/API/services';
 
 const URL_REPORTES = import.meta.env.VITE_URL_REPORTES;
 
@@ -38,13 +40,34 @@ const columns: ColumnDef<any>[] = [
 ];
 
 export default function GestionReportesPage() {
+  const [endpoint, setEndpoint] = useState(URL_REPORTES);
+
+  const refreshData = () => {
+    setEndpoint('');
+    setTimeout(() => setEndpoint(URL_REPORTES), 0);
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteReport(id);
+      refreshData();
+    } catch (error) {
+      console.error('Error al eliminar:', error);
+    }
+  };
+
   return (
     <RootLayout>
       <MaxWidthWrapper>
         <DataTable
-          endpoint={URL_REPORTES}
+          endpoint={endpoint}
           columns={columns}
           filter='tipo_registro'
+          getId={(row) => row.id_registro}
+          onDelete={handleDelete}
+          refreshData={refreshData}
+          createItem={createReport}
+          updateItem={updateReport}
         />
       </MaxWidthWrapper>
     </RootLayout>
