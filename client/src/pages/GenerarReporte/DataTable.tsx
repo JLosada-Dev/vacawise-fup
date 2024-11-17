@@ -53,6 +53,7 @@ type DataTableProps<T> = {
   endpoint: string;
   columns: ColumnDef<T>[];
   filter: string;
+  data?: T[]; // Nueva prop para datos directos
   updateItem?: (id: string, data: any) => Promise<void>;
   onDelete: (id: string) => void;
   getId: (row: T) => string;
@@ -64,6 +65,7 @@ export function DataTable<T>({
   endpoint,
   columns,
   filter,
+  data: initialData, // Datos iniciales pasados como prop
   updateItem,
   onDelete,
   getId,
@@ -124,10 +126,14 @@ export function DataTable<T>({
 
   // Effect to fetch data when endpoint changes
   useEffect(() => {
-    if (endpoint) {
+    if (initialData) {
+      setData(initialData);
+      setIsEmpty(initialData.length === 0);
+      setFetchError(null);
+    } else if (endpoint) {
       fetchData();
     }
-  }, [endpoint]);
+  }, [endpoint, initialData]);
 
   // Table configuration
   const table = useReactTable({

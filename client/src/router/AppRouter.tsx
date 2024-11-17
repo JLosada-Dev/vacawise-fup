@@ -9,6 +9,7 @@ import {
   GestionBovinosPage,
   GestionReportesPage,
   GestionUsuariosPage,
+  GenerarReportePage,
 } from '../pages';
 
 function AppRouter() {
@@ -59,7 +60,7 @@ function AppRouter() {
             />
             <Route
               path={PrivateRoutes.GENERAR_REPORTE}
-              element={<GestionBovinosPage />}
+              element={<GenerarReportePage />}
             />
           </Route>
         </Route>

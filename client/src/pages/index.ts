@@ -4,3 +4,4 @@ export { default as HomePage } from './HomePage';
 export { default as GestionReportesPage } from './GestionReportes/GestionReportesPage';
 export { default as GestionBovinosPage } from './GestionBovinos/GestionBovinosPage';
 export { default as GestionUsuariosPage } from './GestionUsuarios/GestionUsersPage';
+export { default as GenerarReportePage } from './GenerarReporte/GenerarReportesPage';

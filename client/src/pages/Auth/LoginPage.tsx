@@ -33,7 +33,6 @@ function LoginPage() {
 
       const data = await response.json();
       if (response.ok) {
-        console.log('Usuario logueado', data.user.name);
         createUser(data.user);
         navigate(PrivateRoutes.DASHBOARD);
       } else {
