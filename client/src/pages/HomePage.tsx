@@ -21,7 +21,7 @@ function HomePage() {
           <MaxWidthWrapper className='pb-14 lg:grid lg:grid-cols-3 sm:pb-32 lg:gap-x-0 xl:gap-x-8'>
             <div className='col-span-2 px-6 lg:px-0'>
               <div className='relative mx-auto text-center lg:text-left flex flex-col items-center lg:items-start'>
-                <h1 className='relative w-fit tracking-tight text-balance mt-20 font-bold !leading-tight text-gray-900 text-5xl md:text-6xl lg:text-7xl'>
+                <h1 className='relative w-fit tracking-tight text-balance mt-20 font-bold !leading-tight text-gray-900 text-5xl md:text-6xl lg:text-7xl lg:!leading-snug'>
                   Gestiona tu ganadería de manera{' '}
                   <span className='bg-green-600 px-2 text-white'>
                     eficiente
@@ -69,7 +69,7 @@ function HomePage() {
               <div className='relative md:max-w-xl'>
                 <img
                   src={line}
-                  className='absolute w-20 left-8 -bottom-1 select-none'
+                  className='absolute w-20 left-4 -bottom-1 select-none'
                   alt='decorative line'
                 />
                 <img
@@ -154,7 +154,7 @@ function HomePage() {
           <MaxWidthWrapper className='py-24'>
             <div className='mb-12 px-6 lg:px-8'>
               <div className='mx-auto max-w-2xl sm:text-center'>
-                <h2 className='order-1 mt-2 tracking-tight text-center text-balance !leading-tight font-bold text-5xl md:text-6xl text-gray-900'>
+                <h2 className='order-1 mt-2 tracking-tight text-center text-balance !leading-tight lg:!leading-snug font-bold text-5xl md:text-6xl text-gray-900'>
                   Empieza a gestionar tu ganado y{' '}
                   <span className='relative px-2 bg-green-600 text-white'>
                     mejora tu productividad
