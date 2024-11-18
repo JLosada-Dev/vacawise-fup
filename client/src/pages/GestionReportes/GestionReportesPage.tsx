@@ -23,7 +23,18 @@ const columns: ColumnDef<any>[] = [
   {
     accessorKey: 'fecha',
     header: 'Fecha',
-    cell: ({ row }) => new Date(row.getValue('fecha')).toLocaleDateString(),
+    cell: ({ row }) => {
+      const date = new Date(row.getValue('fecha'));
+      return (
+        <div>
+          {date.toLocaleDateString('es-ES', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+          })}
+        </div>
+      );
+    },
   },
   {
     accessorKey: 'tipo_registro',

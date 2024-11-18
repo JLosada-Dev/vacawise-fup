@@ -49,9 +49,9 @@ import AddReportModal from './AddReportModal';
 import { UpdateReportModal } from './UpdateReportModal';
 
 // Types
-type DataTableProps<T> = {
+type DataTableProps<T extends Record<string, any>> = {
   endpoint: string;
-  columns: ColumnDef<T>[];
+  columns: ColumnDef<T, any>[];
   filter: string;
   updateItem?: (id: string, data: any) => Promise<void>;
   onDelete: (id: string) => void;
@@ -60,7 +60,10 @@ type DataTableProps<T> = {
   createItem?: (data: any) => Promise<void>;
 };
 
-export function DataTable<T>({
+// Define las columnas que pueden ordenarse
+const SORTABLE_COLUMNS = ['fecha', 'tipo_registro', 'cantidad_leche'];
+
+export function DataTable<T extends Record<string, any>>({
   endpoint,
   columns,
   filter,
@@ -91,22 +94,18 @@ export function DataTable<T>({
     try {
       const response = await fetch(endpoint);
 
-      // Check if response is ok
       if (!response.ok) {
         throw new Error(`Error HTTP: ${response.status}`);
       }
 
-      // Validate content type
       const contentType = response.headers.get('content-type');
       if (!contentType || !contentType.includes('application/json')) {
         throw new Error('La respuesta del servidor no es JSON válido');
       }
 
-      // Parse response
       const result = await response.json();
       const responseData = result.data || result || [];
 
-      // Update state
       setData(responseData as T[]);
       setIsEmpty(responseData.length === 0);
       setFetchError(null);
@@ -122,17 +121,23 @@ export function DataTable<T>({
     }
   };
 
-  // Effect to fetch data when endpoint changes
   useEffect(() => {
     if (endpoint) {
       fetchData();
     }
   }, [endpoint]);
 
-  // Table configuration
+  // Modificar las columnas para agregar enableSorting solo a las columnas específicas
+  const enhancedColumns = columns.map((col) => ({
+    ...col,
+    enableSorting:
+      'accessorKey' in col &&
+      SORTABLE_COLUMNS.includes(col.accessorKey as string),
+  }));
+
   const table = useReactTable({
     data,
-    columns,
+    columns: enhancedColumns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -149,7 +154,6 @@ export function DataTable<T>({
     },
   });
 
-  // Event handlers
   const handleDeleteRow = async (id: string) => {
     try {
       await onDelete(id);
@@ -176,7 +180,6 @@ export function DataTable<T>({
 
   return (
     <div className='w-full bg-white rounded-xl p-4 my-6'>
-      {/* Table Controls */}
       <div className='flex items-center justify-between py-4'>
         <div className='flex gap-2'>
           <Input
@@ -188,7 +191,6 @@ export function DataTable<T>({
             className='bg-white max-w-md'
           />
 
-          {/* Column Visibility Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant='outline' className='ml-auto'>
@@ -218,7 +220,6 @@ export function DataTable<T>({
           </DropdownMenu>
         </div>
 
-        {/* Add New Item Button */}
         {createItem && (
           <AddReportModal
             onSuccess={handleCreateSuccess}
@@ -227,7 +228,6 @@ export function DataTable<T>({
         )}
       </div>
 
-      {/* Main Table */}
       <div className='rounded-md border'>
         <Table>
           <TableHeader>
@@ -306,7 +306,6 @@ export function DataTable<T>({
                     </TableCell>
                   ))}
 
-                  {/* Row Actions */}
                   <TableCell className='text-right'>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
@@ -338,7 +337,6 @@ export function DataTable<T>({
         </Table>
       </div>
 
-      {/* Pagination Controls */}
       <div className='flex items-center justify-end space-x-2 py-4'>
         <div className='text-sm text-muted-foreground'>
           Página {table.getState().pagination.pageIndex + 1} de{' '}
@@ -380,7 +378,6 @@ export function DataTable<T>({
         </div>
       </div>
 
-      {/* Update Modal */}
       {updateItem && selectedRow && (
         <UpdateReportModal
           isOpen={isUpdateModalOpen}

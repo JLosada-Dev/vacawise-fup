@@ -20,17 +20,13 @@ import {
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
-  Edit2,
-  MoreHorizontal,
   Settings2,
-  Trash2,
 } from 'lucide-react';
 
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
@@ -45,31 +41,19 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
-import { AddCowModal } from '@/pages/GestionBovinos/AddCowModal';
-import { UpdateCowModal } from '@/pages/GestionBovinos/UpdateCowModal';
-
 // Types
 type DataTableProps<T> = {
   endpoint: string;
   columns: ColumnDef<T>[];
   filter: string;
-  data?: T[]; // Nueva prop para datos directos
-  updateItem?: (id: string, data: any) => Promise<void>;
-  onDelete: (id: string) => void;
-  getId: (row: T) => string;
-  refreshData?: () => void;
-  createItem?: (data: any) => Promise<void>;
+  data?: T[]; // Direct data prop
 };
 
 export function DataTable<T>({
   endpoint,
   columns,
   filter,
-  data: initialData, // Datos iniciales pasados como prop
-  updateItem,
-  onDelete,
-  getId,
-  createItem,
+  data: initialData,
 }: DataTableProps<T>) {
   // State management
   const [loading, setLoading] = useState(false);
@@ -79,8 +63,6 @@ export function DataTable<T>({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  const [selectedRow, setSelectedRow] = useState<T | null>(null);
-  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [fetchError, setFetchError] = useState<string | null>(null);
 
   // Fetch data function
@@ -155,31 +137,6 @@ export function DataTable<T>({
     },
   });
 
-  // Event handlers
-  const handleDeleteRow = async (id: string) => {
-    try {
-      await onDelete(id);
-      await fetchData();
-    } catch (error) {
-      console.error('Error al eliminar fila:', error);
-      setFetchError('Error al eliminar el registro');
-    }
-  };
-
-  const handleUpdateClick = (row: T) => {
-    setSelectedRow(row);
-    setIsUpdateModalOpen(true);
-  };
-
-  const handleUpdateSuccess = async () => {
-    setIsUpdateModalOpen(false);
-    await fetchData();
-  };
-
-  const handleCreateSuccess = async () => {
-    await fetchData();
-  };
-
   return (
     <div className='w-full bg-white rounded-xl p-4 my-6'>
       {/* Table Controls */}
@@ -223,11 +180,6 @@ export function DataTable<T>({
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-
-        {/* Add New Item Button */}
-        {createItem && (
-          <AddCowModal onSuccess={handleCreateSuccess} createCow={createItem} />
-        )}
       </div>
 
       {/* Main Table */}
@@ -262,7 +214,6 @@ export function DataTable<T>({
                     )}
                   </TableHead>
                 ))}
-                <TableHead>Acciones</TableHead>
               </TableRow>
             ))}
           </TableHeader>
@@ -271,7 +222,7 @@ export function DataTable<T>({
             {loading ? (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length + 1}
+                  colSpan={columns.length}
                   className='h-24 text-center'
                 >
                   <div className='flex justify-center items-center'>
@@ -282,7 +233,7 @@ export function DataTable<T>({
             ) : fetchError ? (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length + 1}
+                  colSpan={columns.length}
                   className='h-24 text-center text-red-500'
                 >
                   Error: {fetchError}
@@ -291,7 +242,7 @@ export function DataTable<T>({
             ) : isEmpty ? (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length + 1}
+                  colSpan={columns.length}
                   className='h-24 text-center'
                 >
                   No se encontraron datos.
@@ -308,32 +259,6 @@ export function DataTable<T>({
                       )}
                     </TableCell>
                   ))}
-
-                  {/* Row Actions */}
-                  <TableCell className='text-right'>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant='ghost' className='h-8 w-8 p-0'>
-                          <MoreHorizontal className='h-4 w-4' />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align='end'>
-                        <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                          onClick={() => handleUpdateClick(row.original)}
-                        >
-                          <Edit2 className='mr-2 h-4 w-4' /> Editar
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={() => handleDeleteRow(getId(row.original))}
-                          className='text-red-600'
-                        >
-                          <Trash2 className='mr-2 h-4 w-4' /> Eliminar
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
                 </TableRow>
               ))
             )}
@@ -382,17 +307,6 @@ export function DataTable<T>({
           </Button>
         </div>
       </div>
-
-      {/* Update Modal */}
-      {updateItem && selectedRow && (
-        <UpdateCowModal
-          isOpen={isUpdateModalOpen}
-          onClose={() => setIsUpdateModalOpen(false)}
-          onSuccess={handleUpdateSuccess}
-          updateCow={updateItem}
-          cowData={selectedRow as any}
-        />
-      )}
     </div>
   );
 }

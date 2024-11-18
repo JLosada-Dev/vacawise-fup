@@ -1,17 +1,39 @@
-// src/pages/GenerarReportesPage/GenerarReportesPage.tsx
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from '@/components/ui/card';
 import { DataTable } from './DataTable';
 import RootLayout from '@/layouts/RootLayout';
 import { MaxWidthWrapper } from '@/components';
+import { ColumnDef } from '@tanstack/react-table';
+import { Loader2 } from 'lucide-react';
+import {
+  fetchCowReport,
+  ReportResponse,
+} from '@/API/services/generateReportService';
 
 const reportColumns: ColumnDef<any>[] = [
   {
     accessorKey: 'fecha',
     header: 'Fecha',
-    cell: ({ row }) => new Date(row.getValue('fecha')).toLocaleDateString(),
+    cell: ({ row }) => {
+      const date = new Date(row.getValue('fecha'));
+      return (
+        <div>
+          {date.toLocaleDateString('es-ES', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+          })}
+        </div>
+      );
+    },
   },
   {
     accessorKey: 'tipo_registro',
@@ -58,10 +80,26 @@ export default function GenerarReportesPage() {
   return (
     <RootLayout>
       <MaxWidthWrapper>
-        <div className='space-y-6 my-6 bg-white p-4 rounded-md'>
+        <div className='space-y-6 bg-white p-4 rounded-xl my-6'>
+          <div className='flex justify-between items-center'>
+            <div>
+              <h1 className='text-3xl font-bold tracking-tight'>
+                Reportes Bovinos
+              </h1>
+              <p className='text-muted-foreground mt-2'>
+                Genera y visualiza reportes detallados de los bovinos
+                registrados.
+              </p>
+            </div>
+          </div>
+
           <Card>
             <CardHeader>
-              <CardTitle>Generar Reporte de Bovino</CardTitle>
+              <CardTitle>Buscar Bovino</CardTitle>
+              <CardDescription>
+                Ingresa el número de etiqueta del bovino para generar su
+                reporte.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className='flex gap-4 items-end'>
@@ -77,23 +115,37 @@ export default function GenerarReportesPage() {
                     className='max-w-md'
                   />
                 </div>
-                <Button type='submit' disabled={loading || !tagNumber}>
-                  {loading ? 'Generando...' : 'Generar Reporte'}
+                <Button
+                  type='submit'
+                  disabled={loading || !tagNumber}
+                  className='min-w-[150px]'
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                      Generando...
+                    </>
+                  ) : (
+                    'Generar Reporte'
+                  )}
                 </Button>
               </form>
             </CardContent>
           </Card>
 
           {report && (
-            <div className='space-y-4'>
+            <div className='space-y-6'>
               <Card>
-                <CardContent className='pt-6'>
-                  <div className='grid grid-cols-2 gap-4'>
+                <CardHeader>
+                  <CardTitle>Información del Bovino</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className='grid grid-cols-2 md:grid-cols-4 gap-6'>
                     <div>
                       <p className='text-sm font-medium text-muted-foreground'>
                         Número de Etiqueta
                       </p>
-                      <p className='text-lg font-semibold'>
+                      <p className='text-lg font-semibold mt-1'>
                         {report.numero_etiqueta}
                       </p>
                     </div>
@@ -101,20 +153,27 @@ export default function GenerarReportesPage() {
                       <p className='text-sm font-medium text-muted-foreground'>
                         Raza
                       </p>
-                      <p className='text-lg font-semibold'>{report.raza}</p>
+                      <p className='text-lg font-semibold mt-1'>
+                        {report.raza}
+                      </p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-              <DataTable
-                endpoint=''
-                columns={reportColumns}
-                filter='tipo_registro'
-                data={report.registros}
-                onDelete={() => {}}
-                getId={(row) => row.fecha}
-              />
+              <Card>
+                <CardHeader>
+                  <CardTitle>Historial de Registros</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <DataTable
+                    columns={reportColumns}
+                    data={report.registros}
+                    filter='tipo_registro'
+                    endpoint=''
+                  />
+                </CardContent>
+              </Card>
             </div>
           )}
         </div>
@@ -122,10 +181,3 @@ export default function GenerarReportesPage() {
     </RootLayout>
   );
 }
-
-// src/pages/GenerarReportesPage/columns.ts
-import { ColumnDef } from '@tanstack/react-table';
-import {
-  fetchCowReport,
-  ReportResponse,
-} from '@/API/services/generateReportService';

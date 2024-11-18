@@ -110,7 +110,7 @@ function Dashboard() {
                     <Milk />
                   </CardHeader>
                   <CardContent>
-                    <p className='text-2xl font-semibold'>{`${production.daily} ml`}</p>
+                    <p className='text-2xl font-semibold'>{`${production.daily} Litros`}</p>
                   </CardContent>
                 </Card>
 
@@ -122,7 +122,7 @@ function Dashboard() {
                     <Milk />
                   </CardHeader>
                   <CardContent>
-                    <p className='text-2xl font-semibold'>{`${production.monthly} ml`}</p>
+                    <p className='text-2xl font-semibold'>{`${production.monthly} Litros`}</p>
                   </CardContent>
                 </Card>
 
@@ -134,7 +134,7 @@ function Dashboard() {
                     <Milk />
                   </CardHeader>
                   <CardContent>
-                    <p className='text-2xl font-semibold'>{`${production.yearly} ml`}</p>
+                    <p className='text-2xl font-semibold'>{`${production.yearly} Litros`}</p>
                   </CardContent>
                 </Card>
               </div>

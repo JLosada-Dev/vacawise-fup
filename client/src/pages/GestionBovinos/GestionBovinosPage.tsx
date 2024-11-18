@@ -19,8 +19,18 @@ const columns: ColumnDef<any>[] = [
   {
     accessorKey: 'fecha_nacimiento',
     header: 'Fecha nacimiento',
-    cell: ({ row }) =>
-      new Date(row.getValue('fecha_nacimiento')).toLocaleDateString(),
+    cell: ({ row }) => {
+      const date = new Date(row.getValue('fecha_nacimiento'));
+      return (
+        <div>
+          {date.toLocaleDateString('es-ES', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+          })}
+        </div>
+      );
+    },
   },
   {
     accessorKey: 'raza',

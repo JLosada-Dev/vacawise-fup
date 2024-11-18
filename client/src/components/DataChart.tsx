@@ -60,8 +60,8 @@ function DataChart() {
               axisLine={false}
               tickFormatter={(tick) => dayjs(tick).format('ddd DD')}
             />
-            <YAxis tickFormatter={(value) => `${value} ml`} />
-            <Tooltip formatter={(value) => `${value} ml`} />
+            <YAxis tickFormatter={(value) => `${value} L`} />
+            <Tooltip formatter={(value) => `${value} L`} />
             <Bar dataKey='totalMilk' fill={chartConfig.milk.color} radius={4} />
           </BarChart>
         </ChartContainer>

@@ -3,7 +3,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Loader2 } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import {
   Dialog,
   DialogContent,
@@ -101,7 +100,7 @@ export function UpdateReportModal({
     setLoading(true);
 
     try {
-      await updateReport(reportData.id_registro, formData); // Usa id_registro para actualizar
+      await updateReport(reportData.id_registro, formData);
       onClose();
       onSuccess();
     } catch (error) {
@@ -116,7 +115,7 @@ export function UpdateReportModal({
       <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
           <DialogTitle className='text-xl font-semibold text-foreground'>
-            Actualizar reporte
+            Actualizar Reporte
           </DialogTitle>
           <DialogDescription className='text-muted-foreground'>
             Modifique los campos que desea actualizar del reporte.
@@ -124,74 +123,42 @@ export function UpdateReportModal({
         </DialogHeader>
         <form onSubmit={handleSubmit} className='space-y-6 py-4'>
           <div className='space-y-4'>
-            <div className='space-y-2'>
-              <Label
-                htmlFor='id_bovino'
-                className='text-sm font-medium text-foreground'
-              >
-                ID Bovino
-              </Label>
+            <div>
+              <Label htmlFor='id_bovino'>ID Bovino</Label>
               <Input
                 id='id_bovino'
                 name='id_bovino'
                 value={formData.id_bovino}
                 onChange={handleInputChange}
-                className={cn(
-                  'w-full px-3 py-2 border rounded-md',
-                  'focus:outline-none focus:ring-2 focus:ring-primary/50'
-                )}
                 required
               />
             </div>
 
-            <div className='space-y-2'>
-              <Label
-                htmlFor='fecha'
-                className='text-sm font-medium text-foreground'
-              >
-                Fecha
-              </Label>
+            <div>
+              <Label htmlFor='fecha'>Fecha</Label>
               <Input
                 id='fecha'
                 name='fecha'
                 type='date'
                 value={formData.fecha}
                 onChange={handleInputChange}
-                className={cn(
-                  'w-full px-3 py-2 border rounded-md',
-                  'focus:outline-none focus:ring-2 focus:ring-primary/50'
-                )}
                 required
               />
             </div>
 
-            <div className='space-y-2'>
-              <Label
-                htmlFor='tipo_registro'
-                className='text-sm font-medium text-foreground'
-              >
-                Tipo de Registro
-              </Label>
+            <div>
+              <Label htmlFor='tipo_registro'>Tipo de Registro</Label>
               <Select
                 value={formData.tipo_registro}
                 onValueChange={handleTipoRegistroChange}
                 required
               >
-                <SelectTrigger
-                  className={cn(
-                    'w-full',
-                    'focus:outline-none focus:ring-2 focus:ring-primary/50'
-                  )}
-                >
+                <SelectTrigger>
                   <SelectValue placeholder='Selecciona un tipo de registro' />
                 </SelectTrigger>
                 <SelectContent>
                   {TIPOS_REGISTRO.map((tipo) => (
-                    <SelectItem
-                      key={tipo.value}
-                      value={tipo.value}
-                      className='cursor-pointer hover:bg-secondary'
-                    >
+                    <SelectItem key={tipo.value} value={tipo.value}>
                       {tipo.label}
                     </SelectItem>
                   ))}
@@ -199,83 +166,49 @@ export function UpdateReportModal({
               </Select>
             </div>
 
-            <div className='space-y-2'>
-              <Label
-                htmlFor='detalles'
-                className='text-sm font-medium text-foreground'
-              >
-                Detalles
-              </Label>
+            <div>
+              <Label htmlFor='detalles'>Detalles</Label>
               <Input
                 id='detalles'
                 name='detalles'
                 value={formData.detalles}
                 onChange={handleInputChange}
-                placeholder='Ej: Cantidad Ordeño Mañana'
-                className={cn(
-                  'w-full px-3 py-2 border rounded-md',
-                  'focus:outline-none focus:ring-2 focus:ring-primary/50'
-                )}
                 required
               />
             </div>
 
-            <div className='space-y-2'>
-              <Label
-                htmlFor='cantidad_leche'
-                className='text-sm font-medium text-foreground'
-              >
-                Cantidad de leche (L)
-              </Label>
+            <div>
+              <Label htmlFor='cantidad_leche'>Cantidad de leche (L)</Label>
               <Input
                 id='cantidad_leche'
                 name='cantidad_leche'
                 type='number'
                 value={formData.cantidad_leche}
                 onChange={handleInputChange}
-                placeholder='Ej: 200'
-                className={cn(
-                  'w-full px-3 py-2 border rounded-md',
-                  'focus:outline-none focus:ring-2 focus:ring-primary/50'
-                )}
                 required
               />
             </div>
           </div>
 
           <DialogFooter>
-            <div className='flex gap-3 justify-end w-full'>
-              <Button
-                type='button'
-                variant='outline'
-                onClick={onClose}
-                className={cn(
-                  'hover:bg-secondary/80',
-                  loading && 'pointer-events-none opacity-50'
-                )}
-              >
-                Cancelar
-              </Button>
-              <Button
-                type='submit'
-                disabled={loading || !isFormValid()}
-                className={cn(
-                  'hover:bg-primary/90',
-                  'transition-colors',
-                  'inline-flex items-center justify-center',
-                  (loading || !isFormValid()) && 'opacity-50 cursor-not-allowed'
-                )}
-              >
-                {loading ? (
-                  <>
-                    <Loader2 className='mr-2 h-4 w-4 animate-spin' />
-                    Actualizando...
-                  </>
-                ) : (
-                  'Actualizar reporte'
-                )}
-              </Button>
-            </div>
+            <Button
+              type='button'
+              variant='outline'
+              onClick={onClose}
+              disabled={loading}
+            >
+              Cancelar
+            </Button>
+            <Button type='submit' disabled={!isFormValid() || loading}>
+              {loading ? (
+                <>
+                  <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                  Actualizando...
+                </>
+              ) : (
+                'Actualizar'
+              )}
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>

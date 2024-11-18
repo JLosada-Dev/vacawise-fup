@@ -23,16 +23,16 @@ import {
 } from '@/components/ui/select';
 import { useUserContext } from '@/contexts/UserContext';
 
-interface AddReportModalProps {
-  onSuccess: () => void;
-  createReport: (data: any) => Promise<void>;
-}
-
 const TIPOS_REGISTRO = [
   { value: 'Produccion', label: 'Producción' },
   { value: 'Salud', label: 'Salud' },
   { value: 'Reproduccion', label: 'Reproducción' },
 ];
+
+interface AddReportModalProps {
+  onSuccess: () => void;
+  createReport: (data: any) => Promise<void>;
+}
 
 export default function AddReportModal({
   onSuccess,
@@ -47,17 +47,15 @@ export default function AddReportModal({
     cantidad_leche: '',
   });
 
-  // Accedemos al contexto de usuario
   const { user } = useUserContext();
 
-  // Si el usuario no está autenticado, podemos manejarlo aquí si es necesario
   if (!user || user.id === 0) {
     toast({
       title: 'Error',
       description: 'No se ha encontrado un usuario válido.',
       variant: 'destructive',
     });
-    return null; // O alguna otra lógica para manejar el caso de usuario no autenticado
+    return null;
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -88,7 +86,6 @@ export default function AddReportModal({
     e.preventDefault();
     setLoading(true);
 
-    // Incluimos el id_usuario del contexto en el formData
     const reportData = { ...formData, id_usuario: user.id };
 
     try {
@@ -100,7 +97,6 @@ export default function AddReportModal({
       });
       setOpen(false);
       onSuccess();
-      // Limpiar el formulario
       setFormData({
         id_bovino: '',
         tipo_registro: '',
@@ -121,106 +117,67 @@ export default function AddReportModal({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className='gap-2 hover:bg-primary/90 transition-colores'>
+        <Button className='gap-2'>
           <Plus className='h-5 w-5' />
           Agregar reporte
         </Button>
       </DialogTrigger>
-      <DialogContent className='sm:max-w-[425px]'>
+      <DialogContent className='sm:max-w-[450px]'>
         <DialogHeader>
-          <DialogTitle className='text-xl font-semibold text-foreground'>
-            Agregar nuevo reporte
-          </DialogTitle>
-          <DialogDescription className='text-muted-foreground'>
+          <DialogTitle>Agregar nuevo reporte</DialogTitle>
+          <DialogDescription>
             Complete el formulario para registrar un nuevo reporte. Todos los
             campos son obligatorios.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className='space-y-6 py-4'>
-          <div className='space-y-4'>
-            <div className='space-y-2'>
-              <Label
-                htmlFor='id_bovino'
-                className='text-sm font-medium text-foreground'
-              >
-                ID Bovino
-              </Label>
+        <form onSubmit={handleSubmit} className='space-y-4'>
+          <div className='grid gap-4'>
+            {/* ID Bovino */}
+            <div>
+              <Label htmlFor='id_bovino'>ID Bovino</Label>
               <Input
                 id='id_bovino'
                 name='id_bovino'
                 value={formData.id_bovino}
                 onChange={handleInputChange}
                 placeholder='Ej: 1'
-                className={cn(
-                  'w-full px-3 py-2 border rounded-md',
-                  'focus:outline-none focus:ring-2 focus:ring-primary/50',
-                  'placeholder:text-muted-foreground'
-                )}
                 required
               />
             </div>
-
-            <div className='space-y-2'>
-              <Label
-                htmlFor='tipo_registro'
-                className='text-sm font-medium text-foreground'
-              >
-                Tipo de Registro
-              </Label>
+            {/* Tipo de Registro */}
+            <div>
+              <Label htmlFor='tipo_registro'>Tipo de Registro</Label>
               <Select
                 value={formData.tipo_registro}
                 onValueChange={handleTipoRegistroChange}
-                required
               >
-                <SelectTrigger
-                  className={cn(
-                    'w-full',
-                    'focus:outline-none focus:ring-2 focus:ring-primary/50'
-                  )}
-                >
+                <SelectTrigger>
                   <SelectValue placeholder='Selecciona un tipo de registro' />
                 </SelectTrigger>
                 <SelectContent>
                   {TIPOS_REGISTRO.map((tipo) => (
-                    <SelectItem
-                      key={tipo.value}
-                      value={tipo.value}
-                      className='cursor-pointer hover:bg-secondary'
-                    >
+                    <SelectItem key={tipo.value} value={tipo.value}>
                       {tipo.label}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
-
-            <div className='space-y-2'>
-              <Label
-                htmlFor='detalles'
-                className='text-sm font-medium text-foreground'
-              >
-                Detalles
-              </Label>
+            {/* Detalles */}
+            <div>
+              <Label htmlFor='detalles'>Detalles</Label>
               <Input
                 id='detalles'
                 name='detalles'
                 value={formData.detalles}
                 onChange={handleInputChange}
-                className={cn(
-                  'w-full px-3 py-2 border rounded-md',
-                  'focus:outline-none focus:ring-2 focus:ring-primary/50'
-                )}
+                placeholder='Agrega detalles del reporte'
                 required
               />
             </div>
-
-            <div className='space-y-2'>
-              <Label
-                htmlFor='cantidad_leche'
-                className='text-sm font-medium text-foreground'
-              >
-                Cantidad de leche (L)
-              </Label>
+            {/* Cantidad de leche */}
+            <div>
+              <Label htmlFor='cantidad_leche'>Cantidad de leche (L)</Label>
               <Input
                 id='cantidad_leche'
                 name='cantidad_leche'
@@ -228,47 +185,34 @@ export default function AddReportModal({
                 value={formData.cantidad_leche}
                 onChange={handleInputChange}
                 placeholder='Ej: 20 L'
-                className={cn(
-                  'w-full px-3 py-2 border rounded-md',
-                  'focus:outline-none focus:ring-2 focus:ring-primary/50'
-                )}
               />
             </div>
           </div>
-
           <DialogFooter>
-            <div className='flex gap-3 justify-end w-full'>
-              <Button
-                type='button'
-                variant='outline'
-                onClick={() => setOpen(false)}
-                className={cn(
-                  'hover:bg-secondary/80',
-                  loading && 'pointer-events-none opacity-50'
-                )}
-              >
-                Cancelar
-              </Button>
-              <Button
-                type='submit'
-                disabled={loading || !isFormValid()}
-                className={cn(
-                  'hover:bg-primary/90',
-                  'transition-colors',
-                  'inline-flex items-center justify-center',
-                  (loading || !isFormValid()) && 'opacity-50 cursor-not-allowed'
-                )}
-              >
-                {loading ? (
-                  <>
-                    <Loader2 className='mr-2 h-4 w-4 animate-spin' />
-                    Agregando...
-                  </>
-                ) : (
-                  'Agregar reporte'
-                )}
-              </Button>
-            </div>
+            <Button
+              type='button'
+              variant='outline'
+              onClick={() => setOpen(false)}
+              disabled={loading}
+            >
+              Cancelar
+            </Button>
+            <Button
+              type='submit'
+              disabled={loading || !isFormValid()}
+              className={cn(
+                loading ? 'opacity-70 cursor-not-allowed' : 'hover:bg-primary'
+              )}
+            >
+              {loading ? (
+                <>
+                  <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                  Agregando...
+                </>
+              ) : (
+                'Agregar reporte'
+              )}
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>
