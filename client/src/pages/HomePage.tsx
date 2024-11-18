@@ -4,12 +4,13 @@ import Layout from '@/layouts/RootLayout.tsx';
 import { Icons, MaxWidthWrapper, TeamMemberCard } from '../components/index.ts';
 import { Button } from '@/components/ui/button.tsx';
 import {
-  logo,
+  //logo,
   line,
   Avatar_01,
   Avatar_02,
   Avatar_03,
   table,
+  logoVacaWise,
 } from '../assets/images.ts';
 
 function HomePage() {
@@ -68,9 +69,14 @@ function HomePage() {
               <div className='relative md:max-w-xl'>
                 <img
                   src={line}
-                  className='absolute w-20 left-8 -bottom-6 select-none'
+                  className='absolute w-20 left-8 -bottom-1 select-none'
+                  alt='decorative line'
                 />
-                <img src={logo} alt='vaca-logo' />
+                <img
+                  className='w-full scale-125'
+                  src={logoVacaWise}
+                  alt='VacaWise logo'
+                />
               </div>
             </div>
           </MaxWidthWrapper>

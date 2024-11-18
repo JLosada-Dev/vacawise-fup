@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useUserContext } from '@/contexts/UserContext';
 import { ClipboardList, Milk } from 'lucide-react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { logo } from '@/assets/images';
+import { logoVacaWise } from '@/assets/images';
 import { Production, UsersInfo } from '@/types';
 import {
   Card,
@@ -152,7 +152,7 @@ function Dashboard() {
 
                 {user.rol !== 'Administrador' ? (
                   <div className='h-[450px] col-span-3 p-6'>
-                    <img className='' src={logo} alt='vaca-logo' />
+                    <img className='' src={logoVacaWise} alt='vaca-logo' />
                   </div>
                 ) : (
                   <Card className='w-full h-[450px] overflow-hidden col-span-3'>
