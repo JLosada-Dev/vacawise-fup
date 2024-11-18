@@ -1,3 +1,4 @@
+import Page404 from '@/pages/page404';
 import { ReactNode } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
@@ -9,7 +10,7 @@ function RoutesWithNotFound({ children }: Props) {
   return (
     <Routes>
       {children}
-      <Route path='*' element={<div>Not Found</div>} />
+      <Route path='*' element={<Page404 />} />
     </Routes>
   );
 }
