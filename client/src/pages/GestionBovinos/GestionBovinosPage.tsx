@@ -36,10 +36,6 @@ const columns: ColumnDef<any>[] = [
     accessorKey: 'raza',
     header: 'Raza',
   },
-  {
-    accessorKey: 'estado',
-    header: 'Estado',
-  },
 ];
 
 export default function GestionBovinoPage() {

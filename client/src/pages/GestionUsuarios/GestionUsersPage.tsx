@@ -28,10 +28,6 @@ const columns: ColumnDef<any>[] = [
     accessorKey: 'rol',
     header: 'Rol',
   },
-  {
-    accessorKey: 'estado',
-    header: 'Estado',
-  },
 ];
 
 export default function GestionUsersPage() {

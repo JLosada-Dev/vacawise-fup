@@ -9,6 +9,7 @@ import {
   Avatar_01,
   Avatar_02,
   Avatar_03,
+  table,
 } from '../assets/images.ts';
 
 function HomePage() {
@@ -157,20 +158,13 @@ function HomePage() {
               </div>
             </div>
 
-            <div className='mx-auto max-w-6xl px-6 lg:px-8'>
-              <div className='relative flex flex-col items-center md:grid grid-cols-2 gap-40'>
+            <div className='flex justify-center px-2 lg:px-8'>
+              <div className='flex max-w-4xl rounded-xl items-center'>
                 <img
-                  src='#'
-                  className='absolute top-[25rem] md:top-1/2 -translate-y-1/2 z-10 left-1/2 -translate-x-1/2 rotate-90 md:rotate-0'
+                  src={table}
+                  alt='tabla de datos'
+                  className='rounded-xl object-cover shadow ring-1 ring-gray-900/10 h-full w-full'
                 />
-
-                <div className='relative h-80 md:h-full w-full md:justify-self-end max-w-sm rounded-xl bg-gray-900/5 ring-inset ring-gray-900/10 lg:rounded-2xl'>
-                  <img
-                    src='#'
-                    alt='tabla de datos'
-                    className='rounded-sm object-cover shadow-md ring-1 ring-gray-900/10 h-full w-full'
-                  />
-                </div>
               </div>
             </div>
 

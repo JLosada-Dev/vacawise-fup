@@ -126,7 +126,7 @@ export function AddCowModal({ onSuccess, createCow }: AddCowModalProps) {
                 name='numero_etiqueta'
                 value={formData.numero_etiqueta}
                 onChange={handleInputChange}
-                placeholder='Ej: C-50'
+                placeholder='Ej: BOV001'
                 className={cn(
                   'w-full px-3 py-2 border rounded-md',
                   'focus:outline-none focus:ring-2 focus:ring-primary/50',
