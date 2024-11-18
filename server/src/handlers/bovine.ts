@@ -15,7 +15,17 @@ export const createBovine = (req: Request, res: Response) => {
 };
 // Consultar a todos los bovinos
 export const getBovine = async (req: Request, res: Response) => {
-  getEntities(Bovino, req, res);
+  try {
+    const bovino = await Bovino.findAll({
+      order: [['numero_etiqueta', 'ASC']],
+    });
+    if (bovino.length === 0) {
+      return res.status(404).json({ message: 'No se encontraron usuarios' });
+    }
+    res.status(200).json(bovino);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };
 export const getBovineForSelect = async (req: Request, res: Response) => {
   try {
