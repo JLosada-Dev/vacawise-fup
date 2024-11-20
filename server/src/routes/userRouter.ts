@@ -13,7 +13,6 @@ import {
 } from '../handlers/user';
 import { idValidator, usuarioValidators } from '../utils/validator';
 import { handlersInputErrors } from '../middleware';
-import { createRecordBulk } from '../handlers/record';
 
 const userRouter = Router();
 
@@ -27,7 +26,6 @@ userRouter.post(
   handlersInputErrors,
   createUser
 );
-userRouter.post('/registroMasivo', handlersInputErrors, createRecordBulk);
 
 // GET Methods
 // Consultar a todos los usuarios

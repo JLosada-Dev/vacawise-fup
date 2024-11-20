@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { handlersInputErrors } from '../middleware';
 import {
   createRecord,
+  createRecordBulk,
   deleteRecord,
   getMilkProduction,
   getMilkProductionCurrentMonth,
@@ -19,6 +20,8 @@ recordRouter.post(
   handlersInputErrors,
   createRecord
 );
+recordRouter.post('/registroMasivo', handlersInputErrors, createRecordBulk);
+
 // GET Methods
 recordRouter.get('/consultar', handlersInputErrors, getRecord);
 recordRouter.get(
