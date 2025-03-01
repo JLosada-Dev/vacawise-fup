@@ -82,9 +82,9 @@ export const getMilkProduction = async (req: Request, res: Response) => {
     });
 
     res.json({
-      ProduccionDiaria: dailyProduction || 0,
-      ProduccionMensual: monthlyProduction || 0,
-      ProduccionAnual: yearlyProduction || 0,
+      ProduccionDiaria: (dailyProduction || 0).toFixed(2),
+      ProduccionMensual: (monthlyProduction || 0).toFixed(2),
+      ProduccionAnual: (yearlyProduction || 0).toFixed(2),
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
